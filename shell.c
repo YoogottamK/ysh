@@ -1,7 +1,9 @@
 #include "shell.h"
 #include "parse.h"
 #include "prompt.h"
+#include "clear.h"
 
+#include "clear.h"
 #include "ls.h"
 #include "echo.h"
 #include "pwd.h"
@@ -22,6 +24,7 @@ void execCommand(Command c) {
         "pwd",
         "echo",
         "ls",
+        "clear",
     };
 
     int n = sizeof(builtin) / sizeof(builtin[0]),
@@ -47,6 +50,9 @@ void execCommand(Command c) {
             break;
         case 3:
             lsHandler(c);
+            break;
+        case 4:
+            clearScreen();
             break;
         default:
             printf("%s not yet implemented\n", c.command);

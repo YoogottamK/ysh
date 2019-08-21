@@ -57,6 +57,8 @@ cd	cd.c	/^void cd(const char * path) {$/;"	f	typeref:typename:void
 cd.o	Makefile	/^cd.o: cd.c cd.h shell.h$/;"	t
 cdHandler	cd.c	/^void cdHandler(Command c) {$/;"	f	typeref:typename:void
 clean	Makefile	/^clean:$/;"	t
+clear.o	Makefile	/^clear.o: clear.c clear.h$/;"	t
+clearScreen	clear.c	/^void clearScreen() {$/;"	f	typeref:typename:void
 command	shell.h	/^    char * command;$/;"	m	struct:__anon92221f130108	typeref:typename:char *
 commands	shell.h	/^    Command * commands;$/;"	m	struct:__anon92221f130208	typeref:typename:Command *
 count	parse.c	/^int count(char * str, char delim) {$/;"	f	typeref:typename:int
@@ -87,4 +89,4 @@ pwdHandler	pwd.c	/^void pwdHandler(Command c) {$/;"	f	typeref:typename:void
 repl	shell.c	/^void repl() {$/;"	f	typeref:typename:void
 shell.o	Makefile	/^shell.o: shell.c shell.h pwd.o cd.o parse.o prompt.o$/;"	t
 stripSpaces	parse.c	/^char * stripSpaces(char * str) {$/;"	f	typeref:typename:char *
-ysh	Makefile	/^ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o$/;"	t
+ysh	Makefile	/^ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o clear.o$/;"	t

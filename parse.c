@@ -22,13 +22,13 @@ int count(char * str, char delim) {
 char * stripSpaces(char * str) {
     if(!str) return str;
 
-    while(*str == ' ') str++;
+    while(*str == ' ' || *str == '\t') str++;
 
     if(!*str) return str;
 
     char * end = str + strlen(str) - 1;
 
-    while(end > str && *end == ' ') end--;
+    while(end > str && (*end == ' ' || *end == '\t')) end--;
 
     end[1] = 0;
 
@@ -105,7 +105,7 @@ Parsed parse(char * str) {
             int argc = 0;
 
             while(tok) {
-                tok = strtok(0, " ");
+                tok = strtok(0, " \t");
 
                 // if tok becomes NULL now, just break
                 // required, since it would fail at tok[0] == '~' check
