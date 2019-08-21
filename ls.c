@@ -114,7 +114,7 @@ void lsPrint(char * baseDir, char * path, bool l) {
         ctime_r(&st.st_mtime, time);
         time[16] = 0;
 
-        printf("%s %3ld %12ld %8s %8s     %s %s %s\n" COL_RST,
+        printf("%s %3ld %10ld %8s %8s     %s %s %s\n" COL_RST,
                 perm, st.st_nlink, st.st_size, getpwuid(st.st_uid)->pw_name,
                 getgrgid(st.st_gid)->gr_name, time + 4,
                 col, path);
@@ -122,7 +122,7 @@ void lsPrint(char * baseDir, char * path, bool l) {
         free(time);
         free(perm);
     } else {
-        printf("%s %s " COL_RST, col, path);
+        printf("%s%s    " COL_RST, col, path);
     }
 
     free(fileName);
