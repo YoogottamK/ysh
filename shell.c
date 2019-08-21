@@ -33,8 +33,6 @@ void execCommand(Command c) {
             break;
         }
     }
-    lsOpts p;
-    p.l = p.a = 1;
 
     // have to exec builtin
     switch(command) {
@@ -48,8 +46,7 @@ void execCommand(Command c) {
             echoHandler(c);
             break;
         case 3:
-            //  lsHandler(c);
-            ls(c.args[0], p);
+            lsHandler(c);
             break;
         default:
             printf("%s not yet implemented\n", c.command);
@@ -75,9 +72,9 @@ void repl() {
 
         // the E in REPL
         Parsed parsed = parse(inp);
-        for(int i = 0; i < parsed.n; i++) {
+        for(int i = 0; i < parsed.n; i++)
             execCommand(parsed.commands[i]);
-        }
+
         dump(parsed);
     }
 

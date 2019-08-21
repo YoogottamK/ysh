@@ -13,8 +13,44 @@ void lsHandler(Command c) {
     if(!c.argc)
         ls(".", opts);
     else {
+        int * skipOptsIndex = (int*) malloc(sizeof(int) * c.argc),
+            nSkip = 0, skipIndex = 0;
+
         for(int i = 0; i < c.argc; i++) {
+            if(c.args[i] && c.args[i][0] == '-') {
+                skipOptsIndex[nSkip++] = i;
+
+                for(int j = 1; c.args[i][j]; j++) {
+                    switch(c.args[i][j]) {
+                        case 'a':
+                            opts.a = 1;
+                            break;
+                        case 'l':
+                            opts.l = 1;
+                            break;
+                        default:
+                            printf("ls: Unkown option -%c\n", c.args[i][j]);
+                            return;
+                    }
+                }
+            }
         }
+
+        if(c.argc == nSkip) {
+            ls(".", opts);
+        } else {
+            for(int i = 0; i < c.argc; i++) {
+                if(skipIndex < nSkip && i == skipOptsIndex[skipIndex]) {
+                    skipIndex++;
+                    continue;
+                }
+
+                printf(COL_FG_YLW "%s: \n" COL_RST, c.args[i]);
+                ls(c.args[i], opts);
+            }
+        }
+
+        free(skipOptsIndex);
     }
 }
 
@@ -29,7 +65,7 @@ char * getPerm(struct stat st) {
     perm[0] = '-';
     if(S_ISDIR(st.st_mode))
         perm[0] = 'd';
-    else if(S_ISLNK(st.st_mode))
+    if(S_ISLNK(st.st_mode))
         perm[0] = 'l';
 
     perm[1] = !!(st.st_mode & S_IRUSR) ? 'r' : '-';
@@ -54,27 +90,39 @@ void lsPrint(char * baseDir, char * path, bool l) {
     strcat(fileName, "/");
     strcat(fileName, path);
 
-    if(l) {
-        struct stat st;
-        if(stat(fileName, &st) < 0) {
-            perror(path);
-            return;
-        }
+    struct stat st;
+    if(stat(fileName, &st) < 0) {
+        perror(path);
+        return;
+    }
 
-        char * perm = getPerm(st),
-             *time = (char*) malloc(MAX_LEN);
+    char * perm = getPerm(st);
+
+    char * col;
+    if(perm[0] == 'd')
+        col = COL_FG_BLU;
+    else if(perm[0] == 'l')
+        col = COL_FG_CYN;
+    else if(perm[3] == 'x')
+        col = COL_FG_GRN;
+    else
+        col = "";
+
+    if(l) {
+        char*time = (char*) malloc(MAX_LEN);
 
         ctime_r(&st.st_mtime, time);
         time[16] = 0;
 
-        printf("%s %ld\t%ld\t%s %s\t%s %s\n",
+        printf("%s %3ld %12ld %8s %8s     %s %s %s\n" COL_RST,
                 perm, st.st_nlink, st.st_size, getpwuid(st.st_uid)->pw_name,
-                getgrgid(st.st_gid)->gr_name, time + 4, path);
+                getgrgid(st.st_gid)->gr_name, time + 4,
+                col, path);
 
         free(time);
         free(perm);
     } else {
-        printf("%s ", fileName);
+        printf("%s %s " COL_RST, col, path);
     }
 
     free(fileName);

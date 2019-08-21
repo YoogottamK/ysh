@@ -67,6 +67,11 @@ Parsed parse(char * str) {
 
     parsed.n = c;
 
+    // For replacing '~' with actual homedir
+    char * tildaSubstituted = (char*) malloc(MAX_LEN);
+    tildaSubstituted[0] = 0;
+    strcpy(tildaSubstituted, HOME);
+
     // string is broken into ';' seperated 'commands'.
     // Now we have to break each command into constituents
     for(int i = 0; i < c; i++) {
@@ -93,9 +98,6 @@ Parsed parse(char * str) {
 
         parsed.commands[i].command = tok;
 
-        char * tildaSubstituted = (char*) malloc(MAX_LEN);
-        strcpy(tildaSubstituted, HOME);
-
         int homeLen = strlen(HOME);
 
         // other parts are arguments
@@ -110,24 +112,24 @@ Parsed parse(char * str) {
                 if(!tok) break;
 
                 parsed.commands[i].args[argc] = (char*) malloc(MAX_LEN);
+                parsed.commands[i].args[argc][0] = 0;
 
                 if(tok[0] == '~') {
                     strcat(tildaSubstituted, tok + 1);
-
                     strcpy(parsed.commands[i].args[argc], tildaSubstituted);
 
                     tildaSubstituted[homeLen] = 0;
                 } else {
-                    strcpy(parsed.commands[i].args[argc++], tok);
+                    strcpy(parsed.commands[i].args[argc], tok);
                 }
 
                 argc++;
             }
         }
 
-        free(tildaSubstituted);
     }
 
+    free(tildaSubstituted);
     return parsed;
 }
 
