@@ -89,4 +89,6 @@ pwdHandler	pwd.c	/^void pwdHandler(Command c) {$/;"	f	typeref:typename:void
 repl	shell.c	/^void repl() {$/;"	f	typeref:typename:void
 shell.o	Makefile	/^shell.o: shell.c shell.h pwd.o cd.o parse.o prompt.o$/;"	t
 stripSpaces	parse.c	/^char * stripSpaces(char * str) {$/;"	f	typeref:typename:char *
-ysh	Makefile	/^ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o clear.o$/;"	t
+system.o	Makefile	/^system.o: system.c system.h shell.h$/;"	t
+systemCommand	system.c	/^void systemCommand(Command c) {$/;"	f	typeref:typename:void
+ysh	Makefile	/^ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o clear.o system.o$/;"	t

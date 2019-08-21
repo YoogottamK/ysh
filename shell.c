@@ -8,8 +8,11 @@
 #include "echo.h"
 #include "pwd.h"
 #include "cd.h"
+#include "system.h"
 
 void init() {
+    clearScreen();
+
     // initialize home with current path
     if(!getcwd(HOME, MAX_LEN))
         perror("Error initializing ~");
@@ -25,6 +28,7 @@ void execCommand(Command c) {
         "echo",
         "ls",
         "clear",
+        "exit"
     };
 
     int n = sizeof(builtin) / sizeof(builtin[0]),
@@ -54,8 +58,10 @@ void execCommand(Command c) {
         case 4:
             clearScreen();
             break;
+        case 5:
+            exit(0);
         default:
-            printf("%s not yet implemented\n", c.command);
+            systemCommand(c);
             break;
     }
 }
