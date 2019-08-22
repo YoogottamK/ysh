@@ -9,6 +9,7 @@
 #include "pwd.h"
 #include "cd.h"
 #include "system.h"
+#include "pinfo.h"
 
 void init() {
     clearScreen();
@@ -27,7 +28,7 @@ void execCommand(Command c) {
         "pwd",
         "echo",
         "ls",
-        "clear",
+        "pinfo",
         "exit"
     };
 
@@ -56,7 +57,7 @@ void execCommand(Command c) {
             lsHandler(c);
             break;
         case 4:
-            clearScreen();
+            pinfoHandler(c);
             break;
         case 5:
             exit(0);

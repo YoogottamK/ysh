@@ -109,7 +109,7 @@ void lsPrint(char * baseDir, char * path, bool l) {
         col = "";
 
     if(l) {
-        char*time = (char*) malloc(MAX_LEN);
+        char * time = (char*) malloc(MAX_LEN);
 
         ctime_r(&st.st_mtime, time);
         time[16] = 0;

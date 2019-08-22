@@ -11,6 +11,7 @@ typedef struct {
     int argc;
     char * command;
     char ** args;
+    bool bg;
 } Command;
 
 typedef struct {

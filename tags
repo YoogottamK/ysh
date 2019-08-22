@@ -53,6 +53,7 @@ __anon92221f130208	shell.h	/^typedef struct {$/;"	s
 a	ls.h	/^    bool a;$/;"	m	struct:__anon7c9a37fa0108	typeref:typename:bool
 argc	shell.h	/^    int argc;$/;"	m	struct:__anon92221f130108	typeref:typename:int
 args	shell.h	/^    char ** args;$/;"	m	struct:__anon92221f130108	typeref:typename:char **
+bg	shell.h	/^    bool bg;$/;"	m	struct:__anon92221f130108	typeref:typename:bool
 cd	cd.c	/^void cd(const char * path) {$/;"	f	typeref:typename:void
 cd.o	Makefile	/^cd.o: cd.c cd.h shell.h$/;"	t
 cdHandler	cd.c	/^void cdHandler(Command c) {$/;"	f	typeref:typename:void
@@ -67,7 +68,7 @@ echo	echo.c	/^void echo(char ** args, int n) {$/;"	f	typeref:typename:void
 echo.o	Makefile	/^echo.o: echo.c echo.h shell.h$/;"	t
 echoHandler	echo.c	/^void echoHandler(Command c) {$/;"	f	typeref:typename:void
 execCommand	shell.c	/^void execCommand(Command c) {$/;"	f	typeref:typename:void
-getDir	prompt.c	/^char * getDir() {$/;"	f	typeref:typename:char *
+getArg	pinfo.c	/^char * getArg(char * buf, int n) {$/;"	f	typeref:typename:char *
 getPerm	ls.c	/^char * getPerm(struct stat st) {$/;"	f	typeref:typename:char *
 init	shell.c	/^void init() {$/;"	f	typeref:typename:void
 l	ls.h	/^    bool l;$/;"	m	struct:__anon7c9a37fa0108	typeref:typename:bool
@@ -80,15 +81,20 @@ main	shell.c	/^int main() {$/;"	f	typeref:typename:int
 makePrompt	prompt.c	/^void makePrompt() {$/;"	f	typeref:typename:void
 n	shell.h	/^    int n;$/;"	m	struct:__anon92221f130208	typeref:typename:int
 noHiddenFilter	ls.c	/^int noHiddenFilter(const struct dirent *d) {$/;"	f	typeref:typename:int
+openProc	pinfo.c	/^int openProc(char * dir, char * file) {$/;"	f	typeref:typename:int
 parse	parse.c	/^Parsed parse(char * str) {$/;"	f	typeref:typename:Parsed
 parse.o	Makefile	/^parse.o: parse.c parse.h shell.h$/;"	t
+pinfo	pinfo.c	/^void pinfo(char * pid) {$/;"	f	typeref:typename:void
+pinfo.o	Makefile	/^pinfo.o: pinfo.c pinfo.h shell.h prompt.h$/;"	t
+pinfoHandler	pinfo.c	/^void pinfoHandler(Command c) {$/;"	f	typeref:typename:void
 prompt.o	Makefile	/^prompt.o: prompt.c prompt.h shell.h$/;"	t
 pwd	pwd.c	/^void pwd() {$/;"	f	typeref:typename:void
 pwd.o	Makefile	/^pwd.o: pwd.c pwd.h shell.h$/;"	t
 pwdHandler	pwd.c	/^void pwdHandler(Command c) {$/;"	f	typeref:typename:void
 repl	shell.c	/^void repl() {$/;"	f	typeref:typename:void
+replaceWithTilda	prompt.c	/^char * replaceWithTilda(char * cwd) {$/;"	f	typeref:typename:char *
 shell.o	Makefile	/^shell.o: shell.c shell.h pwd.o cd.o parse.o prompt.o$/;"	t
 stripSpaces	parse.c	/^char * stripSpaces(char * str) {$/;"	f	typeref:typename:char *
 system.o	Makefile	/^system.o: system.c system.h shell.h$/;"	t
 systemCommand	system.c	/^void systemCommand(Command c) {$/;"	f	typeref:typename:void
-ysh	Makefile	/^ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o clear.o system.o$/;"	t
+ysh	Makefile	/^ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o clear.o system.o pinfo.o$/;"	t
