@@ -4,9 +4,9 @@
 #define __PROMPT_H
 
 /*
- * This gets the current working dir, replacing HOME with ~
+ * This replaces "HOME" with ~
  */
-char * getDir();
+char * replaceWithTilda(char * cwd);
 
 /*
  * This function prints the prompt
