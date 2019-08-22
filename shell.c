@@ -10,6 +10,7 @@
 #include "cd.h"
 #include "system.h"
 #include "pinfo.h"
+#include "history.h"
 
 void init() {
     clearScreen();
@@ -17,6 +18,8 @@ void init() {
     // initialize home with current path
     if(!getcwd(HOME, MAX_LEN))
         perror("Error initializing ~");
+
+    HISTORY_INDEX = -1;
 }
 
 void execCommand(Command c) {
@@ -29,6 +32,7 @@ void execCommand(Command c) {
         "echo",
         "ls",
         "pinfo",
+        "history",
         "exit"
     };
 
@@ -41,6 +45,8 @@ void execCommand(Command c) {
             break;
         }
     }
+
+    updateHistory(c);
 
     // have to exec builtin
     switch(command) {
@@ -60,6 +66,9 @@ void execCommand(Command c) {
             pinfoHandler(c);
             break;
         case 5:
+            historyHandler(c);
+            break;
+        case 6:
             exit(0);
         default:
             systemCommand(c);

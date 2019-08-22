@@ -34,6 +34,8 @@ FlagsForInclude	.ycm_extra_conf.py	/^def FlagsForInclude(root):$/;"	f
 GetCompilationInfoForFile	.ycm_extra_conf.py	/^def GetCompilationInfoForFile(database, filename):$/;"	f
 HEADER_DIRECTORIES	.ycm_extra_conf.py	/^HEADER_DIRECTORIES = [$/;"	v
 HEADER_EXTENSIONS	.ycm_extra_conf.py	/^HEADER_EXTENSIONS = [$/;"	v
+HISTORY	shell.h	/^char HISTORY[20][MAX_LEN];$/;"	v	typeref:typename:char[20][]
+HISTORY_INDEX	shell.h	/^int HISTORY_INDEX;$/;"	v	typeref:typename:int
 HOME	shell.h	/^char HOME[MAX_LEN];$/;"	v	typeref:typename:char[]
 INCLUDE	Makefile	/^INCLUDE = $/;"	m
 IsHeaderFile	.ycm_extra_conf.py	/^def IsHeaderFile(filename):$/;"	f
@@ -69,7 +71,11 @@ echo.o	Makefile	/^echo.o: echo.c echo.h shell.h$/;"	t
 echoHandler	echo.c	/^void echoHandler(Command c) {$/;"	f	typeref:typename:void
 execCommand	shell.c	/^void execCommand(Command c) {$/;"	f	typeref:typename:void
 getArg	pinfo.c	/^char * getArg(char * buf, int n) {$/;"	f	typeref:typename:char *
+getFullCommand	history.c	/^char * getFullCommand(Command c) {$/;"	f	typeref:typename:char *
 getPerm	ls.c	/^char * getPerm(struct stat st) {$/;"	f	typeref:typename:char *
+history	history.c	/^void history(int n) {$/;"	f	typeref:typename:void
+history.o	Makefile	/^history.o: history.c history.h shell.h$/;"	t
+historyHandler	history.c	/^void historyHandler(Command c) {$/;"	f	typeref:typename:void
 init	shell.c	/^void init() {$/;"	f	typeref:typename:void
 l	ls.h	/^    bool l;$/;"	m	struct:__anon7c9a37fa0108	typeref:typename:bool
 ls	ls.c	/^void ls(char * path, lsOpts opts) {$/;"	f	typeref:typename:void
@@ -97,4 +103,5 @@ shell.o	Makefile	/^shell.o: shell.c shell.h pwd.o cd.o parse.o prompt.o$/;"	t
 stripSpaces	parse.c	/^char * stripSpaces(char * str) {$/;"	f	typeref:typename:char *
 system.o	Makefile	/^system.o: system.c system.h shell.h$/;"	t
 systemCommand	system.c	/^void systemCommand(Command c) {$/;"	f	typeref:typename:void
-ysh	Makefile	/^ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o clear.o system.o pinfo.o$/;"	t
+updateHistory	history.c	/^void updateHistory(Command c) {$/;"	f	typeref:typename:void
+ysh	Makefile	/^ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o clear.o system.o pinfo.o history.o$/;"	t

@@ -44,4 +44,7 @@ typedef struct {
 
 char HOME[MAX_LEN];
 
+char HISTORY[20][MAX_LEN];
+int HISTORY_INDEX;
+
 #endif // __SHELL_H
