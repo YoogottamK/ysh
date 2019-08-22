@@ -103,7 +103,6 @@ Parsed parse(char * str) {
         // other parts are arguments
         if(parsed.commands[i].argc > 0) {
             int argc = 0;
-
             while(tok) {
                 tok = strtok(0, " \t");
 
@@ -127,6 +126,14 @@ Parsed parse(char * str) {
             }
         }
 
+        // if the last arg is "&"
+        if(parsed.commands[i].argc > 0) {
+            if(!strcmp(parsed.commands[i].args[parsed.commands[i].argc - 1], "&")) {
+                parsed.commands[i].bg = 1;
+                parsed.commands[i].argc--;
+            }
+        } else
+            parsed.commands[i].bg = 0;
     }
 
     free(tildaSubstituted);
@@ -137,7 +144,10 @@ void dump(Parsed p) {
     if(p.n > 0) {
         for(int i = 0; i < p.n; i++) {
             if(p.commands[i].args)
-                free(p.commands[i].args);
+                for(int j = 0; j < p.commands[i].argc; j++)
+                    free(p.commands[i].args[j]);
+
+            free(p.commands[i].args);
         }
 
         free(p.commands);

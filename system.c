@@ -21,12 +21,22 @@ void systemCommand(Command c) {
     }
 
     if(pidChild == 0) {
+        if(c.bg) {
+            setpgid(0, 0);
+
+            close(STDIN_FILENO);
+            close(STDOUT_FILENO);
+            close(STDERR_FILENO);
+        }
+
         if(execvp(c.command, args) < 0)
             perror(c.command);
 
         exit(0);
     } else {
-        wait(0);
+        if(!c.bg) {
+            waitpid(pidChild, 0, 0);
+        }
     }
 
     free(args);
