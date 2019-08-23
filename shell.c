@@ -1,9 +1,7 @@
 #include "shell.h"
 #include "parse.h"
 #include "prompt.h"
-#include "clear.h"
 
-#include "clear.h"
 #include "ls.h"
 #include "echo.h"
 #include "pwd.h"
@@ -13,7 +11,8 @@
 #include "history.h"
 
 void init() {
-    clearScreen();
+    // clears the screen
+    printf("\e[1;1H\e[2J");
 
     // initialize home with current path
     if(!getcwd(HOME, MAX_LEN))

@@ -2,8 +2,8 @@ CFLAGS = -g -Wall
 CC = gcc
 INCLUDE = 
 
-ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o clear.o system.o pinfo.o history.o
-	$(CC) $(CFLAGS) -o ysh shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o clear.o system.o pinfo.o history.o
+ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o system.o pinfo.o history.o
+	$(CC) $(CFLAGS) -o ysh shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o system.o pinfo.o history.o
 	ctags -R .
 
 shell.o: shell.c shell.h pwd.o cd.o parse.o prompt.o
@@ -35,9 +35,6 @@ echo.o: echo.c echo.h shell.h
 
 ls.o: ls.c ls.h shell.h
 	$(CC) $(CFLAGS) -c ls.c
-
-clear.o: clear.c clear.h
-	$(CC) $(CFLAGS) -c clear.c
 
 clean:
 	rm *.o ysh
