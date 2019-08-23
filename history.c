@@ -22,7 +22,7 @@ char * getFullCommand(Command c) {
 void updateHistory(Command c) {
     char * command = getFullCommand(c);
 
-    if(!strcmp(command, HISTORY[HISTORY_INDEX]))
+    if(!strcmp(command, HISTORY[HISTORY_INDEX % 20]))
         return;
 
     HISTORY_INDEX++;
