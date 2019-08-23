@@ -1,8 +1,0 @@
-┌───────────┐
-│ Check gfg │
-└───────────┘
-
-1. getpid
-2. fork: creates a copy of parent process
-3. wait: wait for child process to end
-4. execlp

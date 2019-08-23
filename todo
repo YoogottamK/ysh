@@ -1,0 +1,7 @@
+ - ls -l total
+ - spec 6
+ - kill ?
+ - remove "Dirty: " from nightswatch
+ - check each file for perror
+ - convert printf("") to fprintf(stderr, "") in appropriate places
+ - move header files to seperate dir
