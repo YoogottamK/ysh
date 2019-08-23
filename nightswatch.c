@@ -111,8 +111,10 @@ void nightswatch(char * command, int freq) {
             if(now - init >= freq)
                 break;
 
-            if(keyDown() && getchar() == 'q')
+            if(keyDown() && getchar() == 'q') {
                 quit = true;
+                break;
+            }
         }
     }
 }
