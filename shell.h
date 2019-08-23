@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+#include <fcntl.h>
 
 #ifndef __SHELL_H
 #define __SHELL_H

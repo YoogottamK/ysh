@@ -2,6 +2,7 @@
 
 #include "pinfo.h"
 #include "prompt.h"
+#include "utils.h"
 
 void pinfoHandler(Command c) {
     if(!c.argc)
@@ -10,35 +11,6 @@ void pinfoHandler(Command c) {
         pinfo(c.args[0]);
     else
         printf("pinfo: Too many arguments\n");
-}
-
-char * getArg(char * buf, int n) {
-    if(n <= 0)
-        return 0;
-
-    if(n == 1)
-        return strtok(buf, " ");
-
-    strtok(buf, " ");
-
-    for(int i = 0; i < n - 2; i++)
-        strtok(0, " ");
-
-    return strtok(0, " ");
-}
-
-int openProc(char * dir, char * file) {
-    char * procFile = (char*) malloc(MAX_LEN);
-    procFile[0] = 0;
-
-    strcat(procFile, dir);
-    strcat(procFile, file);
-
-    int fd = open(procFile, O_RDONLY);
-
-    free(procFile);
-
-    return fd;
 }
 
 void pinfo(char * pid) {
@@ -57,7 +29,7 @@ void pinfo(char * pid) {
     }
 
     // To get the state of process
-    fd = openProc(procDir, "stat");
+    fd = openFile(procDir, "stat");
     read(fd, buf, MAX_LEN);
 
     char * status = getArg(buf, 3);
@@ -67,7 +39,7 @@ void pinfo(char * pid) {
     close(fd);
 
     // To get the memory used by process
-    fd = openProc(procDir, "statm");
+    fd = openFile(procDir, "statm");
     read(fd, buf, MAX_LEN);
 
     char * mem = getArg(buf, 1);
