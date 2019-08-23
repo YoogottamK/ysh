@@ -1,43 +1,41 @@
 CFLAGS = -g -Wall
 CC = gcc
-INCLUDE = 
 
-ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o system.o pinfo.o history.o utils.o
-	$(CC) $(CFLAGS) -o ysh shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o system.o pinfo.o history.o utils.o
+ALL_OBJECTS = cd.o echo.o history.o ls.o parse.o pinfo.o prompt.o pwd.o shell.o system.o utils.o
+
+ysh: $(ALL_OBJECTS)
+	$(CC) -o ysh $(ALL_OBJECTS)
 	ctags -R .
-
-shell.o: shell.c shell.h pwd.o cd.o parse.o prompt.o
-	$(CC) $(CFLAGS) -c shell.c
-
-pinfo.o: pinfo.c pinfo.h shell.h prompt.h utils.h
-	$(CC) $(CFLAGS) -c pinfo.c
-
-history.o: history.c history.h shell.h
-	$(CC) $(CFLAGS) -c history.c
-
-parse.o: parse.c parse.h shell.h
-	$(CC) $(CFLAGS) -c parse.c
-
-prompt.o: prompt.c prompt.h shell.h utils.h
-	$(CC) $(CFLAGS) -c prompt.c
-
-utils.o: utils.c utils.h shell.h
-	$(CC) $(CFLAGS) -c utils.c
-
-system.o: system.c system.h shell.h
-	$(CC) $(CFLAGS) -c system.c
 
 cd.o: cd.c cd.h shell.h
 	$(CC) $(CFLAGS) -c cd.c
 
-pwd.o: pwd.c pwd.h shell.h
-	$(CC) $(CFLAGS) -c pwd.c
-
 echo.o: echo.c echo.h shell.h
 	$(CC) $(CFLAGS) -c echo.c
+
+history.o: history.c history.h shell.h
+	$(CC) $(CFLAGS) -c history.c
 
 ls.o: ls.c ls.h shell.h
 	$(CC) $(CFLAGS) -c ls.c
 
-clean:
-	rm *.o ysh
+parse.o: parse.c parse.h shell.h
+	$(CC) $(CFLAGS) -c parse.c
+
+pinfo.o: pinfo.c pinfo.h utils.h shell.h
+	$(CC) $(CFLAGS) -c pinfo.c
+
+prompt.o: prompt.c prompt.h utils.h shell.h
+	$(CC) $(CFLAGS) -c prompt.c
+
+pwd.o: pwd.c pwd.h shell.h
+	$(CC) $(CFLAGS) -c pwd.c
+
+shell.o: shell.c shell.h utils.h
+	$(CC) $(CFLAGS) -c shell.c
+
+system.o: system.c system.h shell.h
+	$(CC) $(CFLAGS) -c system.c
+
+utils.o: utils.c utils.h cd.h echo.h history.h ls.h parse.h pinfo.h prompt.h pwd.h system.h
+	$(CC) $(CFLAGS) -c utils.c

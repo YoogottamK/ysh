@@ -1,7 +1,6 @@
 #include <fcntl.h>
 
 #include "pinfo.h"
-#include "prompt.h"
 #include "utils.h"
 
 void pinfoHandler(Command c) {

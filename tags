@@ -41,14 +41,23 @@ INCLUDE	Makefile	/^INCLUDE = $/;"	m
 IsHeaderFile	.ycm_extra_conf.py	/^def IsHeaderFile(filename):$/;"	f
 MAX_LEN	shell.h	/^#define MAX_LEN /;"	d
 MakeRelativePathsInFlagsAbsolute	.ycm_extra_conf.py	/^def MakeRelativePathsInFlagsAbsolute(flags, working_directory):$/;"	f
+NW_DRT	nightswatch.c	/^#define NW_DRT /;"	d	file:
+NW_INT	nightswatch.c	/^#define NW_INT /;"	d	file:
 Parsed	shell.h	/^} Parsed;$/;"	t	typeref:struct:__anon92221f130208
 SOURCE_DIRECTORIES	.ycm_extra_conf.py	/^SOURCE_DIRECTORIES = [$/;"	v
 SOURCE_EXTENSIONS	.ycm_extra_conf.py	/^SOURCE_EXTENSIONS = [$/;"	v
 __CD_H	cd.h	/^#define __CD_H$/;"	d
+__ECHO_H	echo.h	/^#define __ECHO_H$/;"	d
+__HISTORY_H	history.h	/^#define __HISTORY_H$/;"	d
+__LS_H	ls.h	/^#define __LS_H$/;"	d
+__NIGHTSWATCH_H	nightswatch.h	/^#define __NIGHTSWATCH_H$/;"	d
 __PARSE_H	parse.h	/^#define __PARSE_H$/;"	d
+__PINFO_H	pinfo.h	/^#define __PINFO_H$/;"	d
 __PROMPT_H	prompt.h	/^#define __PROMPT_H$/;"	d
 __PWD_H	pwd.h	/^#define __PWD_H$/;"	d
 __SHELL_H	shell.h	/^#define __SHELL_H$/;"	d
+__SYSTEM_H	system.h	/^#define __SYSTEM_H$/;"	d
+__UTILS_H	utils.h	/^#define __UTILS_H$/;"	d
 __anon7c9a37fa0108	ls.h	/^typedef struct {$/;"	s
 __anon92221f130108	shell.h	/^typedef struct {$/;"	s
 __anon92221f130208	shell.h	/^typedef struct {$/;"	s
@@ -60,8 +69,6 @@ cd	cd.c	/^void cd(const char * path) {$/;"	f	typeref:typename:void
 cd.o	Makefile	/^cd.o: cd.c cd.h shell.h$/;"	t
 cdHandler	cd.c	/^void cdHandler(Command c) {$/;"	f	typeref:typename:void
 clean	Makefile	/^clean:$/;"	t
-clear.o	Makefile	/^clear.o: clear.c clear.h$/;"	t
-clearScreen	clear.c	/^void clearScreen() {$/;"	f	typeref:typename:void
 command	shell.h	/^    char * command;$/;"	m	struct:__anon92221f130108	typeref:typename:char *
 commands	shell.h	/^    Command * commands;$/;"	m	struct:__anon92221f130208	typeref:typename:Command *
 count	parse.c	/^int count(char * str, char delim) {$/;"	f	typeref:typename:int
@@ -69,14 +76,14 @@ dump	parse.c	/^void dump(Parsed p) {$/;"	f	typeref:typename:void
 echo	echo.c	/^void echo(char ** args, int n) {$/;"	f	typeref:typename:void
 echo.o	Makefile	/^echo.o: echo.c echo.h shell.h$/;"	t
 echoHandler	echo.c	/^void echoHandler(Command c) {$/;"	f	typeref:typename:void
-execCommand	shell.c	/^void execCommand(Command c) {$/;"	f	typeref:typename:void
-getArg	pinfo.c	/^char * getArg(char * buf, int n) {$/;"	f	typeref:typename:char *
+execCommand	utils.c	/^void execCommand(Command c) {$/;"	f	typeref:typename:void
+getArg	utils.c	/^char * getArg(char * buf, int n) {$/;"	f	typeref:typename:char *
 getFullCommand	history.c	/^char * getFullCommand(Command c) {$/;"	f	typeref:typename:char *
 getPerm	ls.c	/^char * getPerm(struct stat st) {$/;"	f	typeref:typename:char *
 history	history.c	/^void history(int n) {$/;"	f	typeref:typename:void
 history.o	Makefile	/^history.o: history.c history.h shell.h$/;"	t
 historyHandler	history.c	/^void historyHandler(Command c) {$/;"	f	typeref:typename:void
-init	shell.c	/^void init() {$/;"	f	typeref:typename:void
+init	utils.c	/^void init() {$/;"	f	typeref:typename:void
 l	ls.h	/^    bool l;$/;"	m	struct:__anon7c9a37fa0108	typeref:typename:bool
 ls	ls.c	/^void ls(char * path, lsOpts opts) {$/;"	f	typeref:typename:void
 ls.o	Makefile	/^ls.o: ls.c ls.h shell.h$/;"	t
@@ -86,22 +93,26 @@ lsPrint	ls.c	/^void lsPrint(char * baseDir, char * path, bool l) {$/;"	f	typeref
 main	shell.c	/^int main() {$/;"	f	typeref:typename:int
 makePrompt	prompt.c	/^void makePrompt() {$/;"	f	typeref:typename:void
 n	shell.h	/^    int n;$/;"	m	struct:__anon92221f130208	typeref:typename:int
+nightswatch	nightswatch.c	/^void nightswatch(char * command, int freq) {$/;"	f	typeref:typename:void
+nightswatchHandler	nightswatch.c	/^void nightswatchHandler(Command c) {$/;"	f	typeref:typename:void
+nightswatchHelp	nightswatch.c	/^void nightswatchHelp() {$/;"	f	typeref:typename:void
 noHiddenFilter	ls.c	/^int noHiddenFilter(const struct dirent *d) {$/;"	f	typeref:typename:int
-openProc	pinfo.c	/^int openProc(char * dir, char * file) {$/;"	f	typeref:typename:int
+openFile	utils.c	/^int openFile(char * dir, char * file) {$/;"	f	typeref:typename:int
 parse	parse.c	/^Parsed parse(char * str) {$/;"	f	typeref:typename:Parsed
 parse.o	Makefile	/^parse.o: parse.c parse.h shell.h$/;"	t
 pinfo	pinfo.c	/^void pinfo(char * pid) {$/;"	f	typeref:typename:void
-pinfo.o	Makefile	/^pinfo.o: pinfo.c pinfo.h shell.h prompt.h$/;"	t
+pinfo.o	Makefile	/^pinfo.o: pinfo.c pinfo.h shell.h prompt.h utils.h$/;"	t
 pinfoHandler	pinfo.c	/^void pinfoHandler(Command c) {$/;"	f	typeref:typename:void
-prompt.o	Makefile	/^prompt.o: prompt.c prompt.h shell.h$/;"	t
+prompt.o	Makefile	/^prompt.o: prompt.c prompt.h shell.h utils.h$/;"	t
 pwd	pwd.c	/^void pwd() {$/;"	f	typeref:typename:void
 pwd.o	Makefile	/^pwd.o: pwd.c pwd.h shell.h$/;"	t
 pwdHandler	pwd.c	/^void pwdHandler(Command c) {$/;"	f	typeref:typename:void
-repl	shell.c	/^void repl() {$/;"	f	typeref:typename:void
-replaceWithTilda	prompt.c	/^char * replaceWithTilda(char * cwd) {$/;"	f	typeref:typename:char *
+repl	utils.c	/^void repl() {$/;"	f	typeref:typename:void
+replaceWithTilda	utils.c	/^char * replaceWithTilda(char * cwd) {$/;"	f	typeref:typename:char *
 shell.o	Makefile	/^shell.o: shell.c shell.h pwd.o cd.o parse.o prompt.o$/;"	t
 stripSpaces	parse.c	/^char * stripSpaces(char * str) {$/;"	f	typeref:typename:char *
 system.o	Makefile	/^system.o: system.c system.h shell.h$/;"	t
 systemCommand	system.c	/^void systemCommand(Command c) {$/;"	f	typeref:typename:void
 updateHistory	history.c	/^void updateHistory(Command c) {$/;"	f	typeref:typename:void
-ysh	Makefile	/^ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o clear.o system.o pinfo.o history.o$/;"	t
+utils.o	Makefile	/^utils.o: utils.c utils.h shell.h$/;"	t
+ysh	Makefile	/^ysh: shell.o prompt.o parse.o cd.o pwd.o echo.o ls.o system.o pinfo.o history.o utils.o$/;"	t

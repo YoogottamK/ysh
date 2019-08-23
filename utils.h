@@ -3,6 +3,10 @@
 #ifndef __UTILS_H
 #define __UTILS_H
 
+void init();
+
+void repl();
+
 /*
  * This replaces "HOME" with ~
  */
