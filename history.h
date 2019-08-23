@@ -1,5 +1,8 @@
 #include "shell.h"
 
+#ifndef __HISTORY_H
+#define __HISTORY_H
+
 /*
  * manages updating history
  */
@@ -14,3 +17,5 @@ void historyHandler(Command c);
  * The history command itself
  */
 void history(int n);
+
+#endif // __HISTORY_H
