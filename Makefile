@@ -41,7 +41,7 @@ prompt.o: prompt.c include/prompt.h include/utils.h include/shell.h
 shell.o: shell.c include/shell.h include/utils.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c shell.c
 
-utils.o: utils.c include/utils.h include/cd.h include/echo.h include/external.h include/history.h include/ls.h include/parse.h include/pinfo.h include/pcwd.h include/prompt.h
+utils.o: utils.c $(wildcard $(INCLUDE)/*.h)
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c utils.c
 
 clean:
