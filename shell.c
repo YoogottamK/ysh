@@ -7,5 +7,8 @@ int main() {
     // the mail loop
     repl();
 
+    // prepare for shutdown
+    teardown();
+
     return 0;
 }

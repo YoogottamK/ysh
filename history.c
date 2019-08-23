@@ -22,16 +22,16 @@ char * getFullCommand(Command c) {
 void updateHistory(Command c) {
     char * command = getFullCommand(c);
 
-    if(!strcmp(command, HISTORY[HISTORY_INDEX % 20]))
+    if(!strcmp(command, h.history[h.index % 20]))
         return;
 
-    HISTORY_INDEX++;
+    h.index++;
 
-    if(HISTORY_INDEX >= 40)
-        HISTORY_INDEX -= 20;
+    if(h.index >= 40)
+        h.index -= 20;
 
-    HISTORY[HISTORY_INDEX % 20][0] = 0;
-    strcpy(HISTORY[HISTORY_INDEX % 20], command);
+    h.history[h.index % 20][0] = 0;
+    strcpy(h.history[h.index % 20], command);
 
     free(command);
 }
@@ -48,8 +48,8 @@ void historyHandler(Command c) {
 }
 
 void history(int n) {
-    bool goBack = HISTORY_INDEX >= 20;
-    int start, end = HISTORY_INDEX + 1;
+    bool goBack = h.index >= 20;
+    int start, end = h.index + 1;
 
     if(n > 20) {
         n = 20;
@@ -62,5 +62,5 @@ void history(int n) {
         start = (end - n >= 0) ? end - n : 0;
 
     for(int i = start; i < end; i++)
-        printf("%s\n", HISTORY[i % 20]);
+        printf("%s\n", h.history[i % 20]);
 }

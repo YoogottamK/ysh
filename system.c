@@ -30,7 +30,7 @@ void systemCommand(Command c) {
         }
 
         if(execvp(c.command, args) < 0)
-            perror(c.command);
+            printf("Error: command '%s' not found\n", c.command);
 
         exit(0);
     } else {

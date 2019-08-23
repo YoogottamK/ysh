@@ -1,0 +1,10 @@
+*.o
+
+# shell executable
+ysh
+
+# shell history
+.ysh_history
+
+# the ctags file, helps with navigation
+tags

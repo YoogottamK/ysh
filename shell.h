@@ -8,18 +8,6 @@
 #ifndef __SHELL_H
 #define __SHELL_H
 
-typedef struct {
-    int argc;
-    char * command;
-    char ** args;
-    bool bg;
-} Command;
-
-typedef struct {
-    int n;
-    Command * commands;
-} Parsed;
-
 // colors
 #define COL_FG_BLK "\033[30;1m"
 #define COL_FG_RED "\033[31;1m"
@@ -43,9 +31,25 @@ typedef struct {
 
 #define MAX_LEN 1024
 
+typedef struct {
+    int argc;
+    char * command;
+    char ** args;
+    bool bg;
+} Command;
+
+typedef struct {
+    int n;
+    Command * commands;
+} Parsed;
+
+typedef struct {
+    char history[20][MAX_LEN];
+    int index;
+} History;
+
 char HOME[MAX_LEN];
 
-char HISTORY[20][MAX_LEN];
-int HISTORY_INDEX;
+History h;
 
 #endif // __SHELL_H

@@ -7,6 +7,8 @@ void init();
 
 void repl();
 
+void teardown();
+
 /*
  * This replaces "HOME" with ~
  */
@@ -22,5 +24,15 @@ char * getArg(char * str, int n);
  *  fd for it
  */
 int openFile(char * dir, char * file);
+
+/*
+ * returns whether a key was pressed
+ */
+bool keyDown();
+
+/*
+ * returns the first line staring with 'beg' from FILE * 'f'
+ */
+char * getLineStartsWith(FILE * f, char * beg);
 
 #endif // __UTILS_H

@@ -1,14 +1,18 @@
+#include <termios.h>
+#include <sys/ioctl.h>
+
 #include "utils.h"
 
-#include "parse.h"
-#include "prompt.h"
-#include "ls.h"
-#include "echo.h"
-#include "pwd.h"
 #include "cd.h"
-#include "system.h"
-#include "pinfo.h"
+#include "echo.h"
 #include "history.h"
+#include "ls.h"
+#include "nightswatch.h"
+#include "parse.h"
+#include "pinfo.h"
+#include "prompt.h"
+#include "pwd.h"
+#include "system.h"
 
 void init() {
     // clears the screen
@@ -18,7 +22,22 @@ void init() {
     if(!getcwd(HOME, MAX_LEN))
         perror("Error initializing ~");
 
-    HISTORY_INDEX = -1;
+    FILE * histfile = fopen(".ysh_history", "rb");
+
+    if(!histfile)
+        h.index = -1;
+    else {
+        fread(&h, sizeof(h), 1, histfile);
+        fclose(histfile);
+    }
+}
+
+void teardown() {
+    FILE * histfile = fopen(".ysh_history", "wb");
+
+    fwrite(&h, sizeof(h), 1, histfile);
+
+    fclose(histfile);
 }
 
 void execCommand(Command c) {
@@ -32,6 +51,7 @@ void execCommand(Command c) {
         "ls",
         "pinfo",
         "history",
+        "nightswatch",
         "exit"
     };
 
@@ -68,6 +88,10 @@ void execCommand(Command c) {
             historyHandler(c);
             break;
         case 6:
+            nightswatchHandler(c);
+            break;
+        case 7:
+            teardown();
             exit(0);
         default:
             systemCommand(c);
@@ -152,4 +176,39 @@ int openFile(char * dir, char * file) {
     free(procFile);
 
     return fd;
+}
+
+bool keyDown() {
+    struct termios oldt, newt;
+    int bytesWaiting;
+
+    // get props
+    tcgetattr(0, &oldt);
+
+    newt = oldt;
+    // disable canonical mode and don't print
+    newt.c_lflag &= ~(ICANON | ECHO);
+
+    // set new props
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
+    // check if some input is waiting
+    ioctl(0, FIONREAD, &bytesWaiting);
+
+    // reset params
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+
+    return bytesWaiting > 0;
+}
+
+char * getLineStartsWith(FILE * f, char * beg) {
+    char * line = (char*) malloc(MAX_LEN);
+    unsigned long l = strlen(beg);
+
+    while(fgets(line, MAX_LEN, f)) {
+        if(!strncmp(beg, line, l))
+            break;
+    }
+
+    return line;
 }
