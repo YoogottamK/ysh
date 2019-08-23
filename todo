@@ -5,3 +5,4 @@
  - check each file for perror
  - convert printf("") to fprintf(stderr, "") in appropriate places
  - move header files to seperate dir
+ - uname

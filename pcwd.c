@@ -1,4 +1,4 @@
-#include "pwd.h"
+#include "pcwd.h"
 
 void pwdHandler(Command c) {
     if(c.argc)

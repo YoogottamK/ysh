@@ -1,47 +1,48 @@
 CFLAGS = -g -Wall
 CC = gcc
+INCLUDE = include
 
-ALL_OBJECTS = cd.o echo.o history.o ls.o parse.o pinfo.o prompt.o pwd.o shell.o system.o utils.o nightswatch.o
+ALL_OBJECTS = cd.o echo.o external.o history.o ls.o nightswatch.o parse.o pcwd.o pinfo.o prompt.o shell.o utils.o
 
 ysh: $(ALL_OBJECTS)
-	$(CC) -o ysh $(ALL_OBJECTS)
+	$(CC) $(CFLAGS) -I$(INCLUDE) -o ysh $(ALL_OBJECTS)
 	ctags -R .
 
-cd.o: cd.c cd.h shell.h
-	$(CC) $(CFLAGS) -c cd.c
+cd.o: cd.c include/cd.h include/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c cd.c
 
-echo.o: echo.c echo.h shell.h
-	$(CC) $(CFLAGS) -c echo.c
+echo.o: echo.c include/echo.h include/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c echo.c
 
-history.o: history.c history.h shell.h
-	$(CC) $(CFLAGS) -c history.c
+external.o: external.c include/external.h include/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c external.c
 
-ls.o: ls.c ls.h shell.h
-	$(CC) $(CFLAGS) -c ls.c
+history.o: history.c include/history.h include/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c history.c
 
-nightswatch.o: nightswatch.c nightswatch.h utils.h shell.h
-	$(CC) $(CFLAGS) -c nightswatch.c
+ls.o: ls.c include/ls.h include/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c ls.c
 
-parse.o: parse.c parse.h shell.h
-	$(CC) $(CFLAGS) -c parse.c
+nightswatch.o: nightswatch.c include/nightswatch.h include/utils.h include/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c nightswatch.c
 
-pinfo.o: pinfo.c pinfo.h utils.h shell.h
-	$(CC) $(CFLAGS) -c pinfo.c
+parse.o: parse.c include/parse.h include/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c parse.c
 
-prompt.o: prompt.c prompt.h utils.h shell.h
-	$(CC) $(CFLAGS) -c prompt.c
+pcwd.o: pcwd.c include/pcwd.h include/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c pcwd.c
 
-pwd.o: pwd.c pwd.h shell.h
-	$(CC) $(CFLAGS) -c pwd.c
+pinfo.o: pinfo.c include/pinfo.h include/utils.h include/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c pinfo.c
 
-shell.o: shell.c shell.h utils.h
-	$(CC) $(CFLAGS) -c shell.c
+prompt.o: prompt.c include/prompt.h include/utils.h include/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c prompt.c
 
-system.o: system.c system.h shell.h
-	$(CC) $(CFLAGS) -c system.c
+shell.o: shell.c include/shell.h include/utils.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c shell.c
 
-utils.o: utils.c utils.h cd.h echo.h history.h ls.h parse.h pinfo.h prompt.h pwd.h system.h
-	$(CC) $(CFLAGS) -c utils.c
+utils.o: utils.c include/utils.h include/cd.h include/echo.h include/external.h include/history.h include/ls.h include/parse.h include/pinfo.h include/pcwd.h include/prompt.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c utils.c
 
 clean:
 	rm *.o ysh

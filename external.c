@@ -1,6 +1,6 @@
 #include <sys/wait.h>
 
-#include "system.h"
+#include "external.h"
 
 void systemCommand(Command c) {
     char ** args = (char**) malloc((c.argc + 2) * sizeof(char*));

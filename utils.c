@@ -11,8 +11,8 @@
 #include "parse.h"
 #include "pinfo.h"
 #include "prompt.h"
-#include "pwd.h"
-#include "system.h"
+#include "pcwd.h"
+#include "external.h"
 
 void init() {
     // clears the screen
