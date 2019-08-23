@@ -140,6 +140,11 @@ char * replaceWithTilda(char * cwd) {
 
     char * dir = (char*) malloc(MAX_LEN);
 
+    if(cwd[offset] && cwd[offset] != '/') {
+        strcpy(dir, cwd);
+        return dir;
+    }
+
     if(offset > 0) {
         dir[0] = '~';
         strcpy(dir + 1, cwd + offset);
