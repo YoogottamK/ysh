@@ -41,7 +41,7 @@ prompt.o: prompt.c $(INCLUDE)/prompt.h $(INCLUDE)/utils.h $(INCLUDE)/shell.h
 shell.o: shell.c $(INCLUDE)/shell.h $(INCLUDE)/utils.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c shell.c
 
-signals.o: signals.c signals.h
+signals.o: signals.c $(INCLUDE)/signals.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c signals.c
 
 utils.o: utils.c $(wildcard $(INCLUDE)/*.h)
