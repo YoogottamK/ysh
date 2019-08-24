@@ -11,7 +11,8 @@ void makePrompt() {
     char * dir = replaceWithTilda(cwd);
 
     char * hostname = (char*) malloc(MAX_LEN);
-    gethostname(hostname, MAX_LEN);
+    if(gethostname(hostname, MAX_LEN) < 0)
+        perror("Error in printing hostname");
 
     printf(COL_FG_GRN "\r<%s@%s:" COL_FG_BLU "%s" COL_FG_GRN "> " COL_RST, loginName, hostname, dir);
 

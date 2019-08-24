@@ -9,7 +9,8 @@ void pwdHandler(Command c) {
 
 void pwd() {
     char dir[MAX_LEN];
-    getcwd(dir, MAX_LEN);
+    if(!getcwd(dir, MAX_LEN))
+        perror("Error in retrieving current dir");
 
     printf("%s\n", dir);
 }
