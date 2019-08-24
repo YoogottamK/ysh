@@ -8,37 +8,37 @@ ysh: $(ALL_OBJECTS)
 	$(CC) $(CFLAGS) -I$(INCLUDE) -o ysh $(ALL_OBJECTS)
 	ctags -R .
 
-cd.o: cd.c include/cd.h include/shell.h
+cd.o: cd.c $(INCLUDE)/cd.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c cd.c
 
-echo.o: echo.c include/echo.h include/shell.h
+echo.o: echo.c $(INCLUDE)/echo.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c echo.c
 
-external.o: external.c include/external.h include/shell.h
+external.o: external.c $(INCLUDE)/external.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c external.c
 
-history.o: history.c include/history.h include/shell.h
+history.o: history.c $(INCLUDE)/history.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c history.c
 
-ls.o: ls.c include/ls.h include/shell.h
+ls.o: ls.c $(INCLUDE)/ls.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c ls.c
 
-nightswatch.o: nightswatch.c include/nightswatch.h include/utils.h include/shell.h
+nightswatch.o: nightswatch.c $(INCLUDE)/nightswatch.h $(INCLUDE)/utils.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c nightswatch.c
 
-parse.o: parse.c include/parse.h include/shell.h
+parse.o: parse.c $(INCLUDE)/parse.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c parse.c
 
-pcwd.o: pcwd.c include/pcwd.h include/shell.h
+pcwd.o: pcwd.c $(INCLUDE)/pcwd.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c pcwd.c
 
-pinfo.o: pinfo.c include/pinfo.h include/utils.h include/shell.h
+pinfo.o: pinfo.c $(INCLUDE)/pinfo.h $(INCLUDE)/utils.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c pinfo.c
 
-prompt.o: prompt.c include/prompt.h include/utils.h include/shell.h
+prompt.o: prompt.c $(INCLUDE)/prompt.h $(INCLUDE)/utils.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c prompt.c
 
-shell.o: shell.c include/shell.h include/utils.h
+shell.o: shell.c $(INCLUDE)/shell.h $(INCLUDE)/utils.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c shell.c
 
 utils.o: utils.c $(wildcard $(INCLUDE)/*.h)
