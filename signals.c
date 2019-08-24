@@ -16,9 +16,9 @@ void bgProcessExit(int sig) {
                 break;
 
         if(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS)
-            printf("\r%s with pid %d exited normally\n", i == PROC_LIST ? "Process" : p[i].procName, pid);
+            printf(COL_FG_YLW "\r%s with pid %d exited normally\n" COL_RST, i == PROC_LIST ? "Process" : p[i].procName, pid);
         else
-            printf("\r%s with pid %d exited abnormally\n", i == PROC_LIST ? "Process" : p[i].procName, pid);
+            printf(COL_FG_RED "\r%s with pid %d exited abnormally\n" COL_RST, i == PROC_LIST ? "Process" : p[i].procName, pid);
 
         p[i].pid = -1;
         p[i].procName[0] = 0;
