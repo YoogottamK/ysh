@@ -17,7 +17,6 @@ BASE_FLAGS = [
         '-Iinclude',
         '-I/usr/lib/',
         '-I/usr/include/',
-        '-Iinclude'
         ]
 
 SOURCE_EXTENSIONS = [
