@@ -7,7 +7,7 @@
 #define NW_INT "interrupt"
 
 void nightswatchHelp() {
-    printf("Usage: nightswatch [-n freq] (dirty|interrupt)\n");
+    fprintf(stderr, "Usage: nightswatch [-n freq] (dirty|interrupt)\n");
 }
 
 void nightswatchHandler(Command c) {
@@ -16,7 +16,7 @@ void nightswatchHandler(Command c) {
         nightswatchHelp();
     } else if(c.argc == 1) {
         if(strcmp(c.args[0], NW_DRT) && strcmp(c.args[0], NW_INT)) {
-            printf("nightswatch: unknown command %s\n", c.args[0]);
+            fprintf(stderr, "nightswatch: unknown command %s\n", c.args[0]);
 
             // if only one arg, must be command
             nightswatchHelp();

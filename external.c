@@ -16,7 +16,7 @@ void systemCommand(Command c) {
     pid_t pidChild = fork();
 
     if(pidChild < 0) {
-        printf("Error in fork\n");
+        fprintf(stderr, "Error in fork\n");
 
         free(args);
         return;
@@ -34,7 +34,7 @@ void systemCommand(Command c) {
         }
 
         if(execvp(c.command, args) < 0) {
-            printf("Error: command '%s' not found\n", c.command);
+            fprintf(stderr, "Error: command '%s' not found\n", c.command);
             exit(EXIT_FAILURE);
         }
 

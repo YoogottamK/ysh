@@ -1,2 +1,1 @@
  - check each file for perror
- - convert printf("") to fprintf(stderr, "") in appropriate places

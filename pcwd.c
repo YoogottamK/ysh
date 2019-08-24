@@ -2,7 +2,7 @@
 
 void pwdHandler(Command c) {
     if(c.argc)
-        printf("pwd: Too many arguments\n");
+        fprintf(stderr, "pwd: Too many arguments\n");
     else
         pwd();
 }

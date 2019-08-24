@@ -9,7 +9,7 @@ void pinfoHandler(Command c) {
     else if(c.argc == 1)
         pinfo(c.args[0]);
     else
-        printf("pinfo: Too many arguments\n");
+        fprintf(stderr, "pinfo: Too many arguments\n");
 }
 
 void pinfo(char * pid) {

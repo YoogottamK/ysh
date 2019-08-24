@@ -4,7 +4,7 @@ void cdHandler(Command c) {
     if(!c.argc) {
         cd(0);
     } else if(c.argc > 1) {
-        printf("cd: Too many arguments\n");
+        fprintf(stderr, "cd: Too many arguments\n");
     } else {
         cd(c.args[0]);
     }

@@ -43,7 +43,7 @@ void historyHandler(Command c) {
         long n = strtol(c.args[0], 0, 10);
         history(n);
     } else {
-        printf("history: Too many arguments\n");
+        fprintf(stderr, "history: Too many arguments\n");
     }
 }
 
@@ -53,7 +53,7 @@ void history(int n) {
 
     if(n > 20) {
         n = 20;
-        printf("I am only storing the last 20 conmmands\n");
+        fprintf(stderr, "I am only storing the last 20 conmmands\n");
     }
 
     if(goBack)
