@@ -7,6 +7,24 @@
 
 #include "ls.h"
 
+unsigned long getSize(char * path, char * file) {
+    char * fileName = (char*) malloc(MAX_LEN);
+    fileName[0] = 0;
+
+    strcpy(fileName, path);
+    strcat(fileName, "/");
+    strcat(fileName, file);
+
+    struct stat st;
+    lstat(fileName, &st);
+
+    unsigned long size = st.st_blocks;
+
+    free(fileName);
+
+    return size;
+}
+
 void lsHandler(Command c) {
     lsOpts opts = { .a = 0, .l = 0 };
 
@@ -67,16 +85,27 @@ char * getPerm(struct stat st) {
         perm[0] = 'd';
     if(S_ISLNK(st.st_mode))
         perm[0] = 'l';
+    if(S_ISCHR(st.st_mode))
+        perm[0] = 'c';
+    if(S_ISSOCK(st.st_mode))
+        perm[0] = 's';
 
-    perm[1] = !!(st.st_mode & S_IRUSR) ? 'r' : '-';
-    perm[2] = !!(st.st_mode & S_IWUSR) ? 'w' : '-';
-    perm[3] = !!(st.st_mode & S_IXUSR) ? 'x' : '-';
-    perm[4] = !!(st.st_mode & S_IRGRP) ? 'r' : '-';
-    perm[5] = !!(st.st_mode & S_IWGRP) ? 'w' : '-';
-    perm[6] = !!(st.st_mode & S_IXGRP) ? 'x' : '-';
-    perm[7] = !!(st.st_mode & S_IROTH) ? 'r' : '-';
-    perm[8] = !!(st.st_mode & S_IWOTH) ? 'w' : '-';
-    perm[9] = !!(st.st_mode & S_IXOTH) ? 'x' : '-';
+    int masks[] = {
+        S_IRUSR,
+        S_IWUSR,
+        S_IXUSR,
+        S_IRGRP,
+        S_IWGRP,
+        S_IXGRP,
+        S_IROTH,
+        S_IWOTH,
+        S_IXOTH
+    };
+
+    char c[] = { 'r', 'w', 'x' };
+
+    for(int i = 0; i < 9; i++)
+        perm[i + 1] = !!(st.st_mode & masks[i]) ? c[i % 3] : '-';
 
     return perm;
 }
@@ -91,7 +120,7 @@ void lsPrint(char * baseDir, char * path, bool l) {
     strcat(fileName, path);
 
     struct stat st;
-    if(stat(fileName, &st) < 0) {
+    if(lstat(fileName, &st) < 0) {
         perror(path);
         return;
     }
@@ -142,10 +171,22 @@ void ls(char * path, lsOpts opts) {
         return;
     }
 
-    for(int i = 0; i < nItems; i++) {
+    unsigned long size = 0;
+
+    for(int i = 0; i < nItems; i++)
+        size += getSize(path, namelist[i]->d_name);
+
+    if(opts.l)
+        // stat works on the block device
+        // ls works on filesystem
+        // they have different block sizes
+        printf("total: %ld\n", size >> 1);
+
+    for(int i = 0; i < nItems; i++)
         lsPrint(path, namelist[i]->d_name, opts.l);
+
+    for(int i = 0; i < nItems; i++)
         free(namelist[i]);
-    }
 
     free(namelist);
 

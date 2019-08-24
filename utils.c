@@ -184,24 +184,25 @@ int openFile(char * dir, char * file) {
 }
 
 bool keyDown() {
-    struct termios oldt, newt;
+    struct termios oldAttrs, newAttrs;
     int bytesWaiting;
 
     // get props
-    tcgetattr(0, &oldt);
+    tcgetattr(STDIN_FILENO, &oldAttrs);
 
-    newt = oldt;
+    newAttrs = oldAttrs;
+
     // disable canonical mode and don't print
-    newt.c_lflag &= ~(ICANON | ECHO);
+    newAttrs.c_lflag &= ~(ICANON | ECHO);
 
     // set new props
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newAttrs);
 
     // check if some input is waiting
-    ioctl(0, FIONREAD, &bytesWaiting);
+    ioctl(STDIN_FILENO, FIONREAD, &bytesWaiting);
 
     // reset params
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldAttrs);
 
     return bytesWaiting > 0;
 }

@@ -8,7 +8,6 @@ import re
 BASE_FLAGS = [
         '-Wall',
         '-Wextra',
-        '-Werror',
         '-Wno-variadic-macros',
         '-fexceptions',
         '-std=gnu11',
