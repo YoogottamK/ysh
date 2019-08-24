@@ -19,8 +19,11 @@ void init() {
     printf("\e[1;1H\e[2J");
 
     // initialize home with current path
-    if(!getcwd(HOME, MAX_LEN))
-        perror("Error initializing ~");
+    ssize_t len = readlink("/proc/self/exe", HOME, MAX_LEN);
+    int i;
+
+    for(i = len; HOME[i] != '/'; i--);
+    HOME[i] = 0;
 
     // initialize bg process list
     for(int i = 0; i < PROC_LIST; i++) {
