@@ -13,7 +13,7 @@ void makePrompt() {
     char * hostname = (char*) malloc(MAX_LEN);
     gethostname(hostname, MAX_LEN);
 
-    printf(COL_FG_GRN "<%s@%s:" COL_FG_BLU "%s" COL_FG_GRN "> " COL_RST, loginName, hostname, dir);
+    printf(COL_FG_GRN "\r<%s@%s:" COL_FG_BLU "%s" COL_FG_GRN "> " COL_RST, loginName, hostname, dir);
 
     free(cwd);
     free(hostname);

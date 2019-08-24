@@ -22,6 +22,13 @@ void init() {
     if(!getcwd(HOME, MAX_LEN))
         perror("Error initializing ~");
 
+    // initialize bg process list
+    for(int i = 0; i < PROC_LIST; i++) {
+        p[i].procName[0] = 0;
+        p[i].pid = -1;
+    }
+
+    // restore history
     FILE * histfile = fopen(".ysh_history", "rb");
 
     if(!histfile)

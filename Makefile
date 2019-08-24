@@ -2,7 +2,7 @@ CFLAGS = -g -Wall
 CC = gcc
 INCLUDE = include
 
-ALL_OBJECTS = cd.o echo.o external.o history.o ls.o nightswatch.o parse.o pcwd.o pinfo.o prompt.o shell.o utils.o
+ALL_OBJECTS = cd.o echo.o external.o history.o ls.o nightswatch.o parse.o pcwd.o pinfo.o prompt.o signals.o shell.o utils.o
 
 ysh: $(ALL_OBJECTS)
 	$(CC) $(CFLAGS) -I$(INCLUDE) -o ysh $(ALL_OBJECTS)
@@ -40,6 +40,9 @@ prompt.o: prompt.c $(INCLUDE)/prompt.h $(INCLUDE)/utils.h $(INCLUDE)/shell.h
 
 shell.o: shell.c $(INCLUDE)/shell.h $(INCLUDE)/utils.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c shell.c
+
+signals.o: signals.c signals.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c signals.c
 
 utils.o: utils.c $(wildcard $(INCLUDE)/*.h)
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c utils.c

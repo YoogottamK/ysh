@@ -94,7 +94,7 @@ Parsed parse(char * str) {
 
         // the command is the first part of the space separated string
         char * tok;
-        tok = strtok(commands[i], " ");
+        tok = strtok(commands[i], " \t");
 
         parsed.commands[i].command = tok;
 

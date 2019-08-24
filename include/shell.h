@@ -31,6 +31,8 @@
 
 #define MAX_LEN 1024
 
+#define PROC_LIST 30
+
 typedef struct {
     int argc;
     char * command;
@@ -48,8 +50,15 @@ typedef struct {
     int index;
 } History;
 
+typedef struct {
+    char procName[MAX_LEN];
+    pid_t pid;
+} ProcList;
+
+
 char HOME[MAX_LEN];
 
 History h;
+ProcList p[PROC_LIST];
 
 #endif // __SHELL_H
