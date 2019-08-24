@@ -1,15 +1,13 @@
 #include <time.h>
 
 #include "nightswatch.h"
-
 #include "utils.h"
 
 #define NW_DRT "dirty"
 #define NW_INT "interrupt"
 
 void nightswatchHelp() {
-    printf("nightswatch: Not enough arguments\n"
-            "Usage: nightswatch [-n freq] (dirty|interrupt)\n");
+    printf("Usage: nightswatch [-n freq] (dirty|interrupt)\n");
 }
 
 void nightswatchHandler(Command c) {
@@ -66,11 +64,14 @@ void nightswatch(char * command, int freq) {
 
         f = fopen(fileName, "r");
 
+        // I had no time so ¯\_(ツ)_/¯
         line = getLineStartsWith(f, "            CPU0");
         printf("%s", line);
         free(line);
 
         fclose(f);
+    } else {
+        nightswatchHelp();
     }
 
     if(c < 0)
@@ -86,8 +87,8 @@ void nightswatch(char * command, int freq) {
 
         if(!c) {
             line = getLineStartsWith(f, "Dirty:");
-
         } else {
+            // I had no time so ¯\_(ツ)_/¯
             line = getLineStartsWith(f, "   1:");
 
             int i;
