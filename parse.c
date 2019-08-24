@@ -131,7 +131,8 @@ Parsed parse(char * str) {
             if(!strcmp(parsed.commands[i].args[parsed.commands[i].argc - 1], "&")) {
                 parsed.commands[i].bg = 1;
                 parsed.commands[i].argc--;
-            }
+            } else
+                parsed.commands[i].bg = 0;
         } else
             parsed.commands[i].bg = 0;
     }
