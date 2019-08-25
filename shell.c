@@ -4,7 +4,7 @@ int main() {
     // sets up stuff
     init();
 
-    // the mail loop
+    // the main loop
     repl();
 
     // prepare for shutdown

@@ -32,12 +32,12 @@ $ make clean
 ```
 
 ## File structure
- - `cd.c`: Contains code t=for the `cd` builtin
+ - `cd.c`: Contains code for the `cd` builtin
  - `echo.c`: Contains code for the `echo` builtin
  - `external.c`: Contains code that executes system commands [fg/bg]
  - `history.c`: Contains code for the `history` builtin
  - `ls.c`: Contains code for the `ls` builtin
- - `nightswatch.c`: Contains code for the `nightswatch` builting
+ - `nightswatch.c`: Contains code for the `nightswatch` builtin
  - `parse.c`: Contains code which parses the input given to the shell, breaks it down into commands and it's arguments
  - `pcwd.c`: Contains code for the `pwd` builtin
  - `pinfo.c`: Contains code for the `pinfo` builtin
