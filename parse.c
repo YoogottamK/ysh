@@ -35,9 +35,19 @@ char * stripSpaces(char * str) {
     return str;
 }
 
+void replaceTabsWithSpace(char * str) {
+    if(!str) return;
+
+    for(int i = 0; str[i]; i++)
+        if(str[i] == '\t')
+            str[i] = ' ';
+}
+
 Parsed parse(char * str) {
     Parsed parsed;
     char * stripped = stripSpaces(str);
+
+    replaceTabsWithSpace(stripped);
 
     parsed.n = count(stripped, ';');
 
