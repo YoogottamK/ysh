@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <fcntl.h>
 
+#include "list.h"
+
 #ifndef __SHELL_H
 #define __SHELL_H
 
@@ -31,34 +33,26 @@
 
 #define MAX_LEN 1024
 
-#define PROC_LIST 30
-
-typedef struct {
+typedef struct Command {
     int argc;
     char * command;
     char ** args;
     bool bg;
 } Command;
 
-typedef struct {
+typedef struct Parsed {
     int n;
     Command * commands;
 } Parsed;
 
-typedef struct {
+typedef struct History {
     char history[20][MAX_LEN];
     int index;
 } History;
 
-typedef struct {
-    char procName[MAX_LEN];
-    pid_t pid;
-} ProcList;
-
-
 char HOME[MAX_LEN];
 
 History h;
-ProcList p[PROC_LIST];
+Node * procList;
 
 #endif // __SHELL_H

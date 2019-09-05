@@ -26,11 +26,8 @@ void init() {
     for(i = len; HOME[i] != '/'; i--);
     HOME[i] = 0;
 
-    // initialize bg process list
-    for(int i = 0; i < PROC_LIST; i++) {
-        p[i].procName[0] = 0;
-        p[i].pid = -1;
-    }
+    // initialize procList as an empty list
+    procList = 0;
 
     // restore history
     FILE * histfile = fopen(".ysh_history", "rb");

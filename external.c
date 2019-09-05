@@ -1,7 +1,9 @@
 #include <sys/wait.h>
+#include <stdlib.h>
 
 #include "external.h"
 #include "signals.h"
+#include "list.h"
 
 void systemCommand(Command c) {
     char ** args = (char**) malloc((c.argc + 2) * sizeof(char*));
@@ -42,18 +44,12 @@ void systemCommand(Command c) {
         if(c.bg) {
             signal(SIGCHLD, bgProcessExit);
 
-            int index = 0;
+            Process p;
+            p.pid = pidChild;
+            p.name = (char *) malloc(strlen(c.command) + 1);
+            strcpy(p.name, c.command);
 
-            for(; index < PROC_LIST; index++)
-                if(p[index].pid == -1)
-                    break;
-
-            // could find an empty spot
-            if(index != PROC_LIST) {
-                p[index].procName[0] = 0;
-                strcpy(p[index].procName, c.command);
-                p[index].pid = pidChild;
-            }
+            procList = insert(procList, p);
         }
         else
             waitpid(-1, &status, 0);
