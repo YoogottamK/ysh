@@ -5,6 +5,7 @@
 
 #include "cd.h"
 #include "echo.h"
+#include "env.h"
 #include "history.h"
 #include "ls.h"
 #include "nightswatch.h"
@@ -62,6 +63,8 @@ void execCommand(Command c) {
         "pinfo",
         "history",
         "nightswatch",
+        "setenv",
+        "unsetenv",
         "exit"
     };
 
@@ -101,6 +104,12 @@ void execCommand(Command c) {
             nightswatchHandler(c);
             break;
         case 7:
+            setEnvHandler(c);
+            break;
+        case 8:
+            unsetEnvHandler(c);
+            break;
+        case 9:
             teardown();
             exit(0);
         default:
