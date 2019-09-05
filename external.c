@@ -25,12 +25,10 @@ void systemCommand(Command c) {
     if(pidChild == 0) {
         // child process
 
+
         if(c.bg) {
             setpgid(0, 0);
-
-            close(STDIN_FILENO);
-            close(STDOUT_FILENO);
-            close(STDERR_FILENO);
+            signal(SIGTTIN, stopBgProcess);
         }
 
         if(execvp(c.command, args) < 0) {

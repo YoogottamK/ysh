@@ -3,4 +3,6 @@
 /*
  * signal handler for when background process quits
  */
-void bgProcessExit(int sigNum);
+void bgProcessExit(int sig);
+
+void stopBgProcess(int sig);

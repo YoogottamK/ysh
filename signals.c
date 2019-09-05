@@ -27,3 +27,7 @@ void bgProcessExit(int sig) {
         fflush(stdout);
     }
 }
+
+void stopBgProcess(int sig) {
+    raise(SIGTSTP);
+}
