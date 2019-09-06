@@ -1,24 +1,5 @@
 #include "history.h"
 
-char * getFullCommand(Command c) {
-    char * str = (char*) malloc(MAX_LEN);
-    str[0] = 0;
-
-    if(!c.command)
-        return 0;
-
-    strcat(str, c.command);
-
-    for(int i = 0; i < c.argc; i++) {
-        if(c.args[i]) {
-            strcat(str, " ");
-            strcat(str, c.args[i]);
-        }
-    }
-
-    return str;
-}
-
 void updateHistory(Command c) {
     char * command = getFullCommand(c);
 

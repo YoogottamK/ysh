@@ -2,6 +2,7 @@
 
 #include "signals.h"
 #include "prompt.h"
+#include "utils.h"
 
 void bgProcessExit(int sig) {
     int status;
@@ -14,10 +15,12 @@ void bgProcessExit(int sig) {
 
         proc = find(procList, p);
 
+        char * procName = proc.pid < 0 ? "Process" : getArg(proc.name, 1);
+
         if(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS)
-            fprintf(stderr, COL_FG_YLW "\r%s with pid %d exited normally\n" COL_RST, proc.pid < 0 ? "Process" : proc.name, pid);
+            fprintf(stderr, COL_FG_YLW "\r%s with pid %d exited normally\n" COL_RST, procName, pid);
         else
-            fprintf(stderr, COL_FG_RED "\r%s with pid %d exited abnormally\n" COL_RST, proc.pid < 0 ? "Process" : proc.name, pid);
+            fprintf(stderr, COL_FG_RED "\r%s with pid %d exited abnormally\n" COL_RST, procName, pid);
 
         // delete it from the list
         if(proc.pid >= 0)

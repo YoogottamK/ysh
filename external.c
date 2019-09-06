@@ -4,6 +4,7 @@
 #include "external.h"
 #include "signals.h"
 #include "list.h"
+#include "utils.h"
 
 void systemCommand(Command c) {
     char ** args = (char**) malloc((c.argc + 2) * sizeof(char*));
@@ -47,7 +48,7 @@ void systemCommand(Command c) {
             Process p;
             p.pid = pidChild;
             p.name = (char *) malloc(strlen(c.command) + 1);
-            strcpy(p.name, c.command);
+            strcpy(p.name, getFullCommand(c));
 
             procList = insert(procList, p);
         }

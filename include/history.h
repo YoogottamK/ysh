@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "utils.h"
 
 #ifndef __HISTORY_H
 #define __HISTORY_H

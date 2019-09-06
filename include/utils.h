@@ -35,4 +35,9 @@ bool keyDown();
  */
 char * getLineStartsWith(FILE * f, char * beg);
 
+/*
+ * Returns the full command string from the command struct
+ */
+char * getFullCommand(Command c);
+
 #endif // __UTILS_H

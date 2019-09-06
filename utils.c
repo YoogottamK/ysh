@@ -7,6 +7,7 @@
 #include "echo.h"
 #include "env.h"
 #include "history.h"
+#include "jobs.h"
 #include "ls.h"
 #include "nightswatch.h"
 #include "parse.h"
@@ -62,6 +63,7 @@ void execCommand(Command c) {
         "nightswatch",
         "setenv",
         "unsetenv",
+        "jobs",
         "exit"
     };
 
@@ -107,6 +109,9 @@ void execCommand(Command c) {
             unsetEnvHandler(c);
             break;
         case 9:
+            jobsHandler(c);
+            break;
+        case 10:
             teardown();
             exit(0);
         default:
@@ -234,3 +239,23 @@ char * getLineStartsWith(FILE * f, char * beg) {
 
     return line;
 }
+
+char * getFullCommand(Command c) {
+    char * str = (char*) malloc(MAX_LEN);
+    str[0] = 0;
+
+    if(!c.command)
+        return 0;
+
+    strcat(str, c.command);
+
+    for(int i = 0; i < c.argc; i++) {
+        if(c.args[i]) {
+            strcat(str, " ");
+            strcat(str, c.args[i]);
+        }
+    }
+
+    return str;
+}
+
