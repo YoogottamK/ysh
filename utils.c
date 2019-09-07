@@ -64,7 +64,7 @@ void execCommand(Command c) {
         "setenv",
         "unsetenv",
         "jobs",
-        "exit"
+        "quit"
     };
 
     int n = sizeof(builtin) / sizeof(builtin[0]),
