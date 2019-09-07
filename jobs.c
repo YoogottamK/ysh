@@ -1,5 +1,6 @@
 #include "jobs.h"
 #include "list.h"
+#include "utils.h"
 
 void jobs();
 
@@ -11,12 +12,33 @@ void jobsHandler(Command c) {
 }
 
 void jobs() {
-    int index = 1;
+    int index = 1, fd;
     Node * curr = procList;
 
+    char * buf = (char*) malloc(MAX_LEN);
+
     while(curr) {
-        printf("[%d] %s %s %d\n", index, "test", curr->proc.name, curr->proc.pid);
+        sprintf(buf, "/proc/%d/stat", curr->proc.pid);
+        fd = open(buf, O_RDONLY);
+
+        read(fd, buf, MAX_LEN);
+
+        char * status,
+             procStat = getArg(buf, 3)[0];
+
+        if(procStat == 'T')
+            status = "Stopped";
+        else if(procStat == 'Z')
+            status = "Zombie";
+        else
+            status = "Running";
+
+        printf("[%d] %s %s [%d]\n", index, status, curr->proc.name, curr->proc.pid);
         index++;
         curr = curr->next;
+
+        close(fd);
     }
+
+    free(buf);
 }
