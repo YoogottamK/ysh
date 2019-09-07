@@ -33,4 +33,9 @@ Node * delete(Node * root, Process p);
  */
 Process find(Node * root, Process p);
 
+/*
+ * Returns i'th item in list
+ */
+Process get(Node * root, int i);
+
 #endif // __LIST_H

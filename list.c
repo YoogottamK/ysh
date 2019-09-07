@@ -73,3 +73,24 @@ Process find(Node * root, Process p) {
 
     return curr->proc;
 }
+
+Process get(Node * root, int i) {
+    Process nul = { .pid = -1, .name = 0 };
+
+    Node * curr = root;
+
+    if(!root)
+        return nul;
+
+    for(int j = 0; j < i; j++) {
+        if(!curr)
+            return nul;
+
+        curr = curr->next;
+    }
+
+    if(curr)
+        return curr->proc;
+    else
+        return nul;
+}

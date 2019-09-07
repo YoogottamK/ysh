@@ -8,6 +8,7 @@
 #include "env.h"
 #include "history.h"
 #include "jobs.h"
+#include "kjob.h"
 #include "ls.h"
 #include "nightswatch.h"
 #include "parse.h"
@@ -64,6 +65,7 @@ void execCommand(Command c) {
         "setenv",
         "unsetenv",
         "jobs",
+        "kjob",
         "quit"
     };
 
@@ -112,6 +114,9 @@ void execCommand(Command c) {
             jobsHandler(c);
             break;
         case 10:
+            kjobHandler(c);
+            break;
+        case 11:
             teardown();
             exit(0);
         default:
