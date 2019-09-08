@@ -11,6 +11,7 @@
 #include "kjob.h"
 #include "ls.h"
 #include "nightswatch.h"
+#include "overkill.h"
 #include "parse.h"
 #include "pinfo.h"
 #include "prompt.h"
@@ -66,7 +67,8 @@ void execCommand(Command c) {
         "unsetenv",
         "jobs",
         "kjob",
-        "quit"
+        "quit",
+        "overkill"
     };
 
     int n = sizeof(builtin) / sizeof(builtin[0]),
@@ -119,6 +121,9 @@ void execCommand(Command c) {
         case 11:
             teardown();
             exit(0);
+        case 12:
+            overkillHandler(c);
+            break;
         default:
             systemCommand(c);
             break;
