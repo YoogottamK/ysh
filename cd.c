@@ -1,5 +1,7 @@
 #include "cd.h"
 
+void cd(const char * path);
+
 void cdHandler(Command c) {
     if(!c.argc) {
         cd(0);

@@ -8,10 +8,4 @@
  */
 void cdHandler(Command c);
 
-/*
- * Changes the directory to path
- *  if path is not given, it goes to home directory
- */
-void cd(const char * path);
-
 #endif // __CD_H

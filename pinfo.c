@@ -3,6 +3,8 @@
 #include "pinfo.h"
 #include "utils.h"
 
+void pinfo(char * pid);
+
 void pinfoHandler(Command c) {
     if(!c.argc)
         pinfo("self");

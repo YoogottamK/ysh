@@ -1,5 +1,7 @@
 #include "pcwd.h"
 
+void pwd();
+
 void pwdHandler(Command c) {
     if(c.argc)
         fprintf(stderr, "pwd: Too many arguments\n");

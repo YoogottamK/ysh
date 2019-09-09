@@ -14,9 +14,4 @@ void updateHistory(Command c);
  */
 void historyHandler(Command c);
 
-/*
- * The history command itself
- */
-void history(int n);
-
 #endif // __HISTORY_H

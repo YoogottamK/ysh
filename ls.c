@@ -7,6 +7,8 @@
 
 #include "ls.h"
 
+void ls(char * path, lsOpts opts);
+
 unsigned long getSize(char * path, char * file) {
     char * fileName = (char*) malloc(MAX_LEN);
     fileName[0] = 0;

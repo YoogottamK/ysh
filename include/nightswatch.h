@@ -8,9 +8,4 @@
  */
 void nightswatchHandler(Command c);
 
-/*
- * the nightwatch command
- */
-void nightswatch(char * commmand, int freq);
-
 #endif // __NIGHTSWATCH_H

@@ -7,10 +7,4 @@
  */
 void pwdHandler(Command c);
 
-
-/*
- * Prints the path to current working directory
-*/
-void pwd();
-
 #endif // __PWD_H

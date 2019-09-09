@@ -27,8 +27,6 @@ void systemCommand(Command c) {
 
     if(pidChild == 0) {
         // child process
-
-
         if(c.bg) {
             setpgid(0, 0);
             signal(SIGTTIN, stopBgProcess);

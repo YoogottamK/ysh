@@ -1,5 +1,7 @@
 #include "history.h"
 
+void history(int n);
+
 void updateHistory(Command c) {
     char * command = getFullCommand(c);
 

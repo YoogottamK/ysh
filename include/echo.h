@@ -8,9 +8,4 @@
  */
 void echoHandler(Command c);
 
-/*
- * the echo function
- */
-void echo(char ** args, int n);
-
 #endif // __ECHO_H

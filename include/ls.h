@@ -13,9 +13,4 @@ typedef struct {
  */
 void lsHandler(Command c);
 
-/*
- * The ls function
- */
-void ls(char * path, lsOpts opts);
-
 #endif // __LS_H

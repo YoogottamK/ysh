@@ -6,6 +6,8 @@
 #define NW_DRT "dirty"
 #define NW_INT "interrupt"
 
+void nightswatch(char * command, int freq);
+
 void nightswatchHelp() {
     fprintf(stderr, "Usage: nightswatch [-n freq] (dirty|interrupt)\n");
 }
