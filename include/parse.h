@@ -3,10 +3,15 @@
 #ifndef __PARSE_H
 #define __PARSE_H
 
+typedef struct Parsed {
+    int n;
+    Piped * piped;
+} Parsed;
+
 /*
  * frees memory once command execution is over
  */
-void dump(Parsed p);
+//  void dump(Parsed p);
 
 /*
  * The high level function that

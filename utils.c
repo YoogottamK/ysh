@@ -149,9 +149,10 @@ void repl() {
         // the E in REPL
         Parsed parsed = parse(inp);
         for(int i = 0; i < parsed.n; i++)
-            execCommand(parsed.commands[i]);
+            for(int j = 0; j < parsed.piped[i].n; j++)
+                execCommand(parsed.piped[i].commands[j]);
 
-        dump(parsed);
+        //  dump(parsed);
     }
 
     printf("\n");

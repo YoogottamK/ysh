@@ -34,16 +34,22 @@
 #define MAX_LEN 1024
 
 typedef struct Command {
-    int argc;
     char * command;
+    int argc;
     char ** args;
+
     bool bg;
+
+    char * inp;
+    char * out;
+
+    bool append;
 } Command;
 
-typedef struct Parsed {
+typedef struct Piped {
     int n;
     Command * commands;
-} Parsed;
+} Piped;
 
 typedef struct History {
     char history[20][MAX_LEN];

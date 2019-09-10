@@ -1,12 +1,29 @@
 #include "parse.h"
 
+typedef struct Split {
+    int n;
+    char ** tokens;
+} Split;
+
+void escapeQuotes(char * str, char x, char y) {
+    bool inSingleQuotes = 0,
+         inDoubleQuotes = 0;
+
+    for(int i = 0; str[i]; i++) {
+        if(str[i] == '\'')
+            inSingleQuotes ^= 1;
+        else if(str[i] == '"')
+            inDoubleQuotes ^= 1;
+
+        if((inSingleQuotes || inDoubleQuotes) && str[i] == x)
+            str[i] = y;
+    }
+}
+
 int count(char * str, char delim) {
     int c = 0;
 
-    if(!str)
-        return 0;
-
-    if(!strlen(str)) return 0;
+    if(!str || !strlen(str)) return 0;
 
     for(int i = 0; str[i]; i++) {
         if(str[i] == delim) {
@@ -22,13 +39,13 @@ int count(char * str, char delim) {
 char * stripSpaces(char * str) {
     if(!str) return str;
 
-    while(*str == ' ' || *str == '\t') str++;
+    while(*str == ' ') str++;
 
     if(!*str) return str;
 
     char * end = str + strlen(str) - 1;
 
-    while(end > str && (*end == ' ' || *end == '\t')) end--;
+    while(end > str && (*end == ' ')) end--;
 
     end[1] = 0;
 
@@ -43,114 +60,139 @@ void replaceTabsWithSpace(char * str) {
             str[i] = ' ';
 }
 
-Parsed parse(char * str) {
-    Parsed parsed;
-    char * stripped = stripSpaces(str);
+void initCommand(Command * c) {
+    c->bg = c->append = 0;
+    c->argc = -1;
+    c->args = 0;
+    c->command = c->out = c->inp = 0;
+}
 
-    replaceTabsWithSpace(stripped);
+Split split(char * str, char delim) {
+    Split sp;
+    sp.n = -1;
 
-    parsed.n = count(stripped, ';');
+    char delimStr[2] = { delim, 0 };
 
-    // if command is empty, return
-    if(parsed.n <= 0) return parsed;
+    int n = count(str, delim),
+        i = 0;
 
-    // allocate space for commands
-    parsed.commands = (Command*) malloc(parsed.n * sizeof(Command));
+    if(n <= 0)
+        return sp;
 
-    // array to store individual commands, to be tokenized later
-    char ** commands = (char**) malloc(parsed.n * sizeof(char*)),
-         *command,
-         *argument = (char*) malloc(MAX_LEN);
+    sp.tokens = (char**) malloc(n * sizeof(char*));
+    char * buf;
 
-    int c = 0;
+    buf = strtok(str, delimStr);
 
-    command = strtok(stripped, ";");
-    // store it for now, will tokenize later
-    if(command)
-        commands[c++] = stripSpaces(command);
+    while(buf) {
+        sp.tokens[i++] = stripSpaces(buf);
 
-    while(command) {
-        command = strtok(0, ";");
-
-        if(command) commands[c++] = stripSpaces(command);
+        buf = strtok(0, delimStr);
     }
 
-    parsed.n = c;
+    sp.n = i;
 
-    // For replacing '~' with actual homedir
-    char * tildaSubstituted = (char*) malloc(MAX_LEN);
-    tildaSubstituted[0] = 0;
-    strcpy(tildaSubstituted, HOME);
+    return sp;
+}
 
-    // string is broken into ';' seperated 'commands'.
-    // Now we have to break each command into constituents
-    for(int i = 0; i < c; i++) {
-        int n = count(commands[i], ' ');
+/*
+ * Splits the '|' seperated input into Command *
+ */
+Command * parseCommands(Split p) {
+    Command * ret = (Command*) malloc(p.n * sizeof(Command));
 
-        // initialize it to ""
-        argument[0] = 0;
+    // '|' seperated commands
+    for(int i = 0; i < p.n; i++) {
+        initCommand(&ret[i]);
+        Split command = split(p.tokens[i], ' ');
 
-        // if somehow n is 0, argc = -1 represents empty command
-        parsed.commands[i].argc = n - 1;
+        ret[i].command = command.tokens[0];
+        ret[i].bg = !strcmp(command.tokens[command.n - 1], "&");
 
-        // empty command => ignore
-        if(!n) continue;
+        ret[i].args = (char**) malloc(command.n * sizeof(char*));
 
-        // allocate space for arguments
-        if(n > 1)
-            parsed.commands[i].args = (char**) malloc((n - 1) * sizeof(char*));
-        else
-            parsed.commands[i].args = 0;
+        int argc = 0;
 
-        // the command is the first part of the space separated string
-        char * tok;
-        tok = strtok(commands[i], " \t");
+        // space seperated args
+        for(int j = 1; j < command.n; j++) {
+            if(!strcmp(command.tokens[j], "&")) continue;
 
-        parsed.commands[i].command = tok;
+            if(!strcmp(command.tokens[j], "<")) {
+                j++;
+                if(j == command.n) break;
 
-        int homeLen = strlen(HOME);
+                ret[i].inp = realloc(ret[i].inp, strlen(command.tokens[j]) + 1);
+                ret[i].inp[0] = 0;
+                strcpy(ret[i].inp, command.tokens[j]);
+            } else if(!strcmp(command.tokens[j], ">") ||
+                    !strcmp(command.tokens[j], ">>")) {
+                j++;
+                if(j == command.n) break;
 
-        // other parts are arguments
-        if(parsed.commands[i].argc > 0) {
-            int argc = 0;
-            while(tok) {
-                tok = strtok(0, " \t");
+                ret[i].out = realloc(ret[i].out, strlen(command.tokens[j]) + 1);
+                ret[i].out[0] = 0;
+                strcpy(ret[i].out, command.tokens[j]);
 
-                // if tok becomes NULL now, just break
-                // required, since it would fail at tok[0] == '~' check
-                if(!tok) break;
+                ret[i].append = command.tokens[j][1] == '>';
+            } else {
+                bool tildeSub = command.tokens[j][0] == '~';
+                ret[i].args[argc] = (char*) malloc(strlen(command.tokens[j]) + 1 + (tildeSub * strlen(HOME)));
 
-                parsed.commands[i].args[argc] = (char*) malloc(MAX_LEN);
-                parsed.commands[i].args[argc][0] = 0;
+                ret[i].args[argc][0] = 0;
 
-                if(tok[0] == '~') {
-                    strcat(tildaSubstituted, tok + 1);
-                    strcpy(parsed.commands[i].args[argc], tildaSubstituted);
+                if(tildeSub)
+                    strcpy(ret[i].args[argc], HOME);
 
-                    tildaSubstituted[homeLen] = 0;
-                } else {
-                    strcpy(parsed.commands[i].args[argc], tok);
-                }
+                strcat(ret[i].args[argc], command.tokens[j]);
 
                 argc++;
             }
         }
 
-        // if the last arg is "&"
-        if(parsed.commands[i].argc > 0) {
-            if(!strcmp(parsed.commands[i].args[parsed.commands[i].argc - 1], "&")) {
-                parsed.commands[i].bg = 1;
-                parsed.commands[i].argc--;
-            } else
-                parsed.commands[i].bg = 0;
-        } else
-            parsed.commands[i].bg = 0;
+        ret[i].args = realloc(ret[i].args, argc * sizeof(char*));
+        ret[i].argc = argc;
     }
 
-    free(tildaSubstituted);
+    return ret;
+}
+
+/*
+ * Splits the ';' seperated input into Piped *
+ */
+Piped * parsePiped(Split input) {
+    Piped * ret = (Piped*) malloc(input.n * sizeof(Piped));
+
+    for(int i = 0; i < input.n; i++) {
+        Split piped = split(input.tokens[i], '|');
+
+        ret[i].n = piped.n;
+        ret[i].commands = parseCommands(piped);
+    }
+
+    return ret;
+}
+
+Parsed parse(char * str) {
+    Parsed parsed;
+    replaceTabsWithSpace(str);
+
+    char * stripped = stripSpaces(str);
+
+    // split the string delimited by ';'
+    Split input = split(stripped, ';');
+
+    parsed.n = input.n;
+
+    if(parsed.n <= 0)
+        return parsed;
+
+    // allocate space for commands
+    parsed.piped = parsePiped(input);
+
     return parsed;
 }
 
+/*
 void dump(Parsed p) {
     if(p.n > 0) {
         for(int i = 0; i < p.n; i++) {
@@ -164,3 +206,4 @@ void dump(Parsed p) {
         free(p.commands);
     }
 }
+*/
