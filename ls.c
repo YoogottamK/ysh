@@ -57,6 +57,7 @@ void lsHandler(Command c) {
         }
 
         if(c.argc == nSkip) {
+            // all arguments to ls were -x, no directory was given
             ls(".", opts);
         } else {
             for(int i = 0; i < c.argc; i++) {
@@ -83,6 +84,7 @@ char * getPerm(struct stat st) {
     perm[10] = 0;
 
     perm[0] = '-';
+
     if(S_ISDIR(st.st_mode))
         perm[0] = 'd';
     if(S_ISLNK(st.st_mode))
@@ -93,15 +95,9 @@ char * getPerm(struct stat st) {
         perm[0] = 's';
 
     int masks[] = {
-        S_IRUSR,
-        S_IWUSR,
-        S_IXUSR,
-        S_IRGRP,
-        S_IWGRP,
-        S_IXGRP,
-        S_IROTH,
-        S_IWOTH,
-        S_IXOTH
+        S_IRUSR, S_IWUSR, S_IXUSR,
+        S_IRGRP, S_IWGRP, S_IXGRP,
+        S_IROTH, S_IWOTH, S_IXOTH
     };
 
     char c[] = { 'r', 'w', 'x' };
@@ -153,7 +149,7 @@ void lsPrint(char * baseDir, char * path, bool l) {
         free(time);
         free(perm);
     } else {
-        printf("%s%s    " COL_RST, col, path);
+        printf("%s%s\n" COL_RST, col, path);
     }
 
     free(fileName);
@@ -182,6 +178,7 @@ void ls(char * path, lsOpts opts) {
         // stat works on the block device
         // ls works on filesystem
         // they have different block sizes
+        // so for the correct output, size / 2
         printf("total: %ld\n", size >> 1);
 
     for(int i = 0; i < nItems; i++)
@@ -191,7 +188,4 @@ void ls(char * path, lsOpts opts) {
         free(namelist[i]);
 
     free(namelist);
-
-    if(!opts.l)
-        printf("\n");
 }
