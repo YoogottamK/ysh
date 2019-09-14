@@ -22,16 +22,21 @@ void pinfo(char * pid) {
 
     sprintf(procDir, "/proc/%s/", pid);
 
+    // To get the state of process
+    fd = openFile(procDir, "stat");
+    read(fd, buf, MAX_LEN);
+
+    if(fd < 0) {
+        fprintf(stderr, "Process with pid %s not found\n", pid);
+        return;
+    }
+
     if(!strcmp(pid, "self")) {
         pid_t self = getpid();
         printf("pid: %d\n", self);
     } else {
         printf("pid: %s\n", pid);
     }
-
-    // To get the state of process
-    fd = openFile(procDir, "stat");
-    read(fd, buf, MAX_LEN);
 
     char * status = getArg(buf, 3);
 
