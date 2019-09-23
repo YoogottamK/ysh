@@ -18,7 +18,9 @@
 #include "pinfo.h"
 #include "prompt.h"
 
-#define DEBUG 1
+#ifndef DEBUG
+#define DEBUG 0
+#endif
 
 void init() {
     // clears the screen

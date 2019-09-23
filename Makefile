@@ -8,6 +8,9 @@ ysh: $(ALL_OBJECTS)
 	$(CC) $(CFLAGS) -I$(INCLUDE) -o ysh $(ALL_OBJECTS)
 	ctags -R .
 
+debug: CFLAGS += -DDEBUG=1
+debug: ysh
+
 cd.o: cd.c $(INCLUDE)/cd.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c cd.c
 
