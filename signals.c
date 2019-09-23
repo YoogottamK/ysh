@@ -26,7 +26,7 @@ void bgProcessExit(int sig) {
         if(proc.pid >= 0)
             procList = delete(procList, proc);
 
-        makePrompt();
+        printf("%s", makePrompt());
         fflush(stdout);
     }
 }

@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <readline/readline.h>
+
 #include "shell.h"
 
 #ifndef __UTILS_H
@@ -39,5 +42,10 @@ char * getLineStartsWith(FILE * f, char * beg);
  * Returns the full command string from the command struct
  */
 char * getFullCommand(Command c);
+
+/*
+ * handler for up arrow key
+ */
+int upHist(int c, int k);
 
 #endif // __UTILS_H

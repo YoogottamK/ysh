@@ -6,6 +6,7 @@
 #include "cd.h"
 #include "echo.h"
 #include "env.h"
+#include "external.h"
 #include "history.h"
 #include "jobs.h"
 #include "kjob.h"
@@ -13,14 +14,18 @@
 #include "nightswatch.h"
 #include "overkill.h"
 #include "parse.h"
+#include "pcwd.h"
 #include "pinfo.h"
 #include "prompt.h"
-#include "pcwd.h"
-#include "external.h"
+
+#define DEBUG 1
 
 void init() {
     // clears the screen
     printf("\e[1;1H\e[2J");
+
+    // initialize up arrow counter
+    upCount = 0;
 
     // initialize home with current path
     ssize_t len = readlink("/proc/self/exe", HOME, MAX_LEN);
@@ -72,13 +77,58 @@ void execCommand(Command c) {
     };
 
     int n = sizeof(builtin) / sizeof(builtin[0]),
-        command = -1;
+        command = -1,
+        stdoutSave = -1,
+        stdinSave = -1,
+        inFd = -1,
+        outFd = -1;
 
     for(int i = 0; i < n; i++) {
         if(!strcmp(builtin[i], c.command)) {
             command = i;
             break;
         }
+    }
+
+    if(DEBUG) {
+        printf(COL_BG_CYN COL_FG_BLK "===DEBUG===" COL_RST "\n");
+
+        printf("%s\n", c.command);
+
+        printf("args: ");
+        for(int i = 0; i < c.argc; i++)
+            printf("'%s' ", c.args[i]);
+        printf("\n");
+
+        printf("inp: %s\n", c.inp ? c.inp : "STDIN");
+        printf("out: %s\n", c.out ? c.out : "STDOUT");
+        printf("append: %d\n", c.append);
+
+        printf(COL_BG_CYN COL_FG_BLK "====END====" COL_RST "\n");
+    }
+
+    if(c.inp) {
+        stdinSave = dup(STDIN_FILENO);
+        inFd = open(c.inp, O_CREAT | O_RDONLY);
+
+        if(inFd < 0)
+            perror("Error opening input file");
+        else
+            dup2(inFd, STDIN_FILENO);
+    }
+
+    if(c.out) {
+        stdoutSave = dup(STDOUT_FILENO);
+
+        if(c.append)
+            outFd = open(c.out, O_CREAT | O_WRONLY | O_APPEND);
+        else
+            outFd = open(c.out, O_CREAT | O_WRONLY | O_TRUNC);
+
+        if(outFd < 0)
+            perror("Error opening output file");
+        else
+            dup2(outFd, STDOUT_FILENO);
     }
 
     updateHistory(c);
@@ -128,23 +178,50 @@ void execCommand(Command c) {
             systemCommand(c);
             break;
     }
+
+    if(stdinSave > 0) {
+        dup2(stdinSave, 0);
+        close(inFd);
+    }
+
+    if(stdoutSave > 0) {
+        dup2(stdoutSave, 1);
+        close(outFd);
+    }
 }
 
 void repl() {
-    size_t bufSize = 0;
+    //  size_t bufSize = 0;
     char * inp = 0;
-    ssize_t inpSize;
+    //  ssize_t inpSize;
 
     // the L in REPL
     while(1) {
-        makePrompt();
+        char * prompt = makePrompt();
+        inp = readline(prompt);
+        free(prompt);
+
+        if(upCount) {
+            if(upCount > h.index) {
+                fprintf(stderr, "Recall capacity exceeded\n");
+                rl_on_new_line();
+            } else {
+                inp[0] = 0;
+                strcpy(inp, h.history[(h.index - upCount) % 20]);
+            }
+
+            upCount = 0;
+        }
+
+        if(!inp)
+            break;
 
         // the R in REPL
-        inpSize = getline(&inp, &bufSize, stdin);
-        inp[inpSize - 1] = 0;
+        //  inpSize = getline(&inp, &bufSize, stdin);
+        //  inp[inpSize - 1] = 0;
 
-        if(inpSize <= 0)
-            break;
+        //  if(inpSize <= 0)
+            //  break;
 
         // the E in REPL
         Parsed parsed = parse(inp);
@@ -270,3 +347,11 @@ char * getFullCommand(Command c) {
     return str;
 }
 
+int upHist(int c, int k) {
+    upCount++;
+
+    if(upCount <= h.index)
+        printf("\r\33[2K%s%s", makePrompt(), h.history[(h.index - upCount) % 20]);
+
+    return 0;
+}

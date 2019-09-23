@@ -61,4 +61,6 @@ char HOME[MAX_LEN];
 History h;
 Node * procList;
 
+int upCount;
+
 #endif // __SHELL_H

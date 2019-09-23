@@ -2,7 +2,7 @@
 
 #include "utils.h"
 
-void makePrompt() {
+char * makePrompt() {
     char * cwd = (char*) malloc(MAX_LEN);
     if(!getcwd(cwd, MAX_LEN))
         perror("Error in getting current dir");
@@ -14,9 +14,13 @@ void makePrompt() {
     if(gethostname(hostname, MAX_LEN) < 0)
         perror("Error in printing hostname");
 
-    printf(COL_FG_GRN "\r<%s@%s:" COL_FG_BLU "%s" COL_FG_GRN "> " COL_RST, loginName, hostname, dir);
+    char * prompt = (char*) malloc(MAX_LEN);
+
+    sprintf(prompt, COL_FG_GRN "<%s@%s:" COL_FG_BLU "%s" COL_FG_GRN "> " COL_RST, loginName, hostname, dir);
 
     free(cwd);
     free(hostname);
     free(dir);
+
+    return prompt;
 }

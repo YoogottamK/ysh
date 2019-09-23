@@ -27,10 +27,8 @@ void systemCommand(Command c) {
 
     if(pidChild == 0) {
         // child process
-        if(c.bg) {
+        if(c.bg)
             setpgid(0, 0);
-            signal(SIGTTIN, stopBgProcess);
-        }
 
         if(execvp(c.command, args) < 0) {
             fprintf(stderr, "Error: command '%s' not found\n", c.command);

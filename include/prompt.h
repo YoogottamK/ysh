@@ -6,6 +6,6 @@
 /*
  * This function prints the prompt
  */
-void makePrompt();
+char * makePrompt();
 
 #endif // __PROMPT_H
