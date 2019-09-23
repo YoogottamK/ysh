@@ -104,6 +104,9 @@ Command * parseCommands(Split p) {
     // '|' seperated commands
     for(int i = 0; i < p.n; i++) {
         initCommand(&ret[i]);
+
+        escapeQuotes(p.tokens[i], ' ', 1);
+
         Split command = split(p.tokens[i], ' ');
 
         ret[i].command = command.tokens[0];
@@ -115,6 +118,8 @@ Command * parseCommands(Split p) {
 
         // space seperated args
         for(int j = 1; j < command.n; j++) {
+            escapeQuotes(command.tokens[j], 1, ' ');
+
             if(!strcmp(command.tokens[j], "&")) continue;
 
             if(!strcmp(command.tokens[j], "<")) {
@@ -123,17 +128,21 @@ Command * parseCommands(Split p) {
 
                 ret[i].inp = realloc(ret[i].inp, strlen(command.tokens[j]) + 1);
                 ret[i].inp[0] = 0;
+
+                escapeQuotes(command.tokens[j], 1, ' ');
                 strcpy(ret[i].inp, command.tokens[j]);
             } else if(!strcmp(command.tokens[j], ">") ||
                     !strcmp(command.tokens[j], ">>")) {
+                ret[i].append = command.tokens[j][1] == '>';
+
                 j++;
                 if(j == command.n) break;
 
                 ret[i].out = realloc(ret[i].out, strlen(command.tokens[j]) + 1);
                 ret[i].out[0] = 0;
-                strcpy(ret[i].out, command.tokens[j]);
 
-                ret[i].append = command.tokens[j][1] == '>';
+                escapeQuotes(command.tokens[j], 1, ' ');
+                strcpy(ret[i].out, command.tokens[j]);
             } else {
                 bool tildeSub = command.tokens[j][0] == '~';
                 ret[i].args[argc] = (char*) malloc(strlen(command.tokens[j]) + 1 + (tildeSub * strlen(HOME)));
