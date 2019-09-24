@@ -20,6 +20,8 @@
 
 #ifndef DEBUG
 #define DEBUG 0
+#else
+#define DEBUG 1
 #endif
 
 void init() {
@@ -184,11 +186,13 @@ void execCommand(Command c) {
     if(stdinSave > 0) {
         dup2(stdinSave, 0);
         close(inFd);
+        close(stdinSave);
     }
 
     if(stdoutSave > 0) {
         dup2(stdoutSave, 1);
         close(outFd);
+        close(stdoutSave);
     }
 }
 

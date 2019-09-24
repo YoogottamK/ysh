@@ -1,4 +1,4 @@
-CFLAGS = -g -Wall -lreadline
+CFLAGS = -Wall -lreadline
 CC = gcc
 INCLUDE = include
 
@@ -8,7 +8,7 @@ ysh: $(ALL_OBJECTS)
 	$(CC) $(CFLAGS) -I$(INCLUDE) -o ysh $(ALL_OBJECTS)
 	ctags -R .
 
-debug: CFLAGS += -DDEBUG=1
+debug: CFLAGS += -DDEBUG -g
 debug: ysh
 
 cd.o: cd.c $(INCLUDE)/cd.h $(INCLUDE)/shell.h
