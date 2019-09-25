@@ -5,6 +5,7 @@
 #include "utils.h"
 
 #include "cd.h"
+#include "fg.h"
 #include "echo.h"
 #include "env.h"
 #include "external.h"
@@ -90,7 +91,8 @@ void execCommand(Command c) {
         "jobs",
         "kjob",
         "quit",
-        "overkill"
+        "overkill",
+        "fg"
     };
 
     int n = sizeof(builtin) / sizeof(builtin[0]),
@@ -192,6 +194,9 @@ void execCommand(Command c) {
             exit(0);
         case 12:
             overkillHandler(c);
+            break;
+        case 13:
+            fgHandler(c);
             break;
         default:
             systemCommand(c);

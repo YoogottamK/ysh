@@ -46,6 +46,9 @@ Node * delete(Node * root, Process proc) {
         curr = curr->next;
     }
 
+    if(!curr)
+        return 0;
+
     prev->next = curr->next;
 
     // free the mem allocated to name the process

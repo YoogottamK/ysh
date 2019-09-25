@@ -43,14 +43,15 @@ void ctrlzHandler(int sig) {
     if(fgPid > 0) {
         kill(fgPid, SIGTSTP);
 
+        printf("Suspended\t%s [%d]\n", getFullCommand(fgCommand), fgPid);
+
         Process p;
         p.pid = fgPid;
         p.name = (char *) malloc(strlen(fgCommand.command) + 1);
         strcpy(p.name, getFullCommand(fgCommand));
 
         procList = insert(procList, p);
-    }
-    else {
+    } else {
         printf("\n");
 
         rl_on_new_line();
