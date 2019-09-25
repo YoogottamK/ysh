@@ -2,7 +2,7 @@ CFLAGS = -g -Wall
 CC = gcc
 INCLUDE = include
 
-ALL_OBJECTS = cd.o fg.o echo.o env.o external.o history.o jobs.o kjob.o list.o ls.o nightswatch.o overkill.o parse.o pcwd.o pinfo.o prompt.o signals.o shell.o utils.o
+ALL_OBJECTS = bg.o cd.o fg.o echo.o env.o external.o history.o jobs.o kjob.o list.o ls.o nightswatch.o overkill.o parse.o pcwd.o pinfo.o prompt.o signals.o shell.o utils.o
 
 ysh: $(ALL_OBJECTS)
 	$(CC) $(CFLAGS) -I$(INCLUDE) -o ysh $(ALL_OBJECTS)
@@ -10,6 +10,9 @@ ysh: $(ALL_OBJECTS)
 
 debug: CFLAGS += -DDEBUG
 debug: ysh
+
+bg.o: bg.c $(INCLUDE)/bg.h $(INCLUDE)/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c bg.c
 
 cd.o: cd.c $(INCLUDE)/cd.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c cd.c

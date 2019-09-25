@@ -4,11 +4,12 @@
 
 #include "utils.h"
 
+#include "bg.h"
 #include "cd.h"
-#include "fg.h"
 #include "echo.h"
 #include "env.h"
 #include "external.h"
+#include "fg.h"
 #include "history.h"
 #include "jobs.h"
 #include "kjob.h"
@@ -92,7 +93,8 @@ void execCommand(Command c) {
         "kjob",
         "quit",
         "overkill",
-        "fg"
+        "fg",
+        "bg"
     };
 
     int n = sizeof(builtin) / sizeof(builtin[0]),
@@ -197,6 +199,9 @@ void execCommand(Command c) {
             break;
         case 13:
             fgHandler(c);
+            break;
+        case 14:
+            bgHandler(c);
             break;
         default:
             systemCommand(c);
