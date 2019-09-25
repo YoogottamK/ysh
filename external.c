@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "external.h"
-#include "signals.h"
 #include "list.h"
 #include "utils.h"
 
@@ -40,8 +39,6 @@ void systemCommand(Command c) {
     } else {
         // Parent process
         if(c.bg) {
-            signal(SIGCHLD, bgProcessExit);
-
             Process p;
             p.pid = pidChild;
             p.name = (char *) malloc(strlen(c.command) + 1);
@@ -49,8 +46,15 @@ void systemCommand(Command c) {
 
             procList = insert(procList, p);
         }
-        else
-            waitpid(-1, &status, 0);
+        else {
+            fgPid = pidChild;
+            fgCommand = c;
+
+            waitpid(-1, &status, WUNTRACED);
+
+            fgPid = -1;
+            fgCommand.command = 0;
+        }
     }
 
     free(args);

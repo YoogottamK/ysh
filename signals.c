@@ -38,3 +38,23 @@ void ctrlcHandler(int sig) {
     rl_replace_line("", 0);
     rl_redisplay();
 }
+
+void ctrlzHandler(int sig) {
+    if(fgPid > 0) {
+        kill(fgPid, SIGTSTP);
+
+        Process p;
+        p.pid = fgPid;
+        p.name = (char *) malloc(strlen(fgCommand.command) + 1);
+        strcpy(p.name, getFullCommand(fgCommand));
+
+        procList = insert(procList, p);
+    }
+    else {
+        printf("\n");
+
+        rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay();
+    }
+}

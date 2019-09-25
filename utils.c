@@ -53,8 +53,14 @@ void init() {
         fclose(histfile);
     }
 
+    // init fg process's pid
+    fgPid = -1;
+    fgCommand.command = 0;
+
+    // setup shell signal handlers
     signal(SIGINT, ctrlcHandler);
-    signal(SIGTSTP, SIG_IGN);
+    signal(SIGTSTP, ctrlzHandler);
+    signal(SIGCHLD, bgProcessExit);
 }
 
 void teardown() {

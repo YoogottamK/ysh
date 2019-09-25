@@ -79,4 +79,10 @@ Node * procList;
 // stores the number of times the up key was pressed
 int upCount;
 
+// stores the foreground process's pid
+pid_t fgPid;
+
+// stores the whole foreground command
+Command fgCommand;
+
 #endif // __SHELL_H

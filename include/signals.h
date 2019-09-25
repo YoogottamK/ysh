@@ -13,4 +13,9 @@ void bgProcessExit(int sig);
  */
 void ctrlcHandler(int sig);
 
+/*
+ * Handler for SIGTSTP, when Ctrl+Z is pressed
+ */
+void ctrlzHandler(int sig);
+
 #endif // __SIGNALS_H
