@@ -31,6 +31,10 @@ void bgProcessExit(int sig) {
     }
 }
 
-void stopBgProcess(int sig) {
-    raise(SIGTSTP);
+void ctrlcHandler(int sig) {
+    printf("\n");
+
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
 }

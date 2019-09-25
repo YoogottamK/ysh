@@ -9,8 +9,8 @@
 void bgProcessExit(int sig);
 
 /*
- * signal handler for when background process quits
+ * Handler for SIGINT, when Ctrl+C is pressed
  */
-void stopBgProcess(int sig);
+void ctrlcHandler(int sig);
 
 #endif // __SIGNALS_H

@@ -2,6 +2,9 @@
 
 #include "utils.h"
 
+#define COL_BEG "\001"
+#define COL_END "\002"
+
 char * makePrompt() {
     char * cwd = (char*) malloc(MAX_LEN);
     if(!getcwd(cwd, MAX_LEN))
@@ -16,7 +19,9 @@ char * makePrompt() {
 
     char * prompt = (char*) malloc(MAX_LEN);
 
-    sprintf(prompt, COL_FG_GRN "<%s@%s:" COL_FG_BLU "%s" COL_FG_GRN "> " COL_RST, loginName, hostname, dir);
+    sprintf(prompt, COL_BEG COL_FG_GRN COL_END "<%s@%s:" COL_BEG COL_FG_BLU COL_END
+            "%s" COL_BEG COL_FG_GRN COL_END "> " COL_BEG COL_RST COL_END,
+            loginName, hostname, dir);
 
     free(cwd);
     free(hostname);

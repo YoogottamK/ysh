@@ -1,5 +1,6 @@
 #include <termios.h>
 #include <sys/ioctl.h>
+#include <signal.h>
 
 #include "utils.h"
 
@@ -17,6 +18,7 @@
 #include "pcwd.h"
 #include "pinfo.h"
 #include "prompt.h"
+#include "signals.h"
 
 #ifndef DEBUG
 #define DEBUG 0
@@ -50,9 +52,14 @@ void init() {
         fread(&h, sizeof(h), 1, histfile);
         fclose(histfile);
     }
+
+    signal(SIGINT, ctrlcHandler);
+    signal(SIGTSTP, SIG_IGN);
 }
 
 void teardown() {
+    printf("\n");
+
     FILE * histfile = fopen(".ysh_history", "wb");
 
     fwrite(&h, sizeof(h), 1, histfile);
@@ -111,9 +118,10 @@ void execCommand(Command c) {
         printf(COL_BG_CYN COL_FG_BLK "====END====" COL_RST "\n");
     }
 
+    // check if input is stdin or something else
     if(c.inp) {
         stdinSave = dup(STDIN_FILENO);
-        inFd = open(c.inp, O_CREAT | O_RDONLY);
+        inFd = open(c.inp, O_RDONLY, 0644);
 
         if(inFd < 0)
             perror("Error opening input file");
@@ -121,13 +129,14 @@ void execCommand(Command c) {
             dup2(inFd, STDIN_FILENO);
     }
 
+    // check if output is stdout or something else
     if(c.out) {
         stdoutSave = dup(STDOUT_FILENO);
 
         if(c.append)
-            outFd = open(c.out, O_CREAT | O_WRONLY | O_APPEND);
+            outFd = open(c.out, O_CREAT | O_WRONLY | O_APPEND, 0644);
         else
-            outFd = open(c.out, O_CREAT | O_WRONLY | O_TRUNC);
+            outFd = open(c.out, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 
         if(outFd < 0)
             perror("Error opening output file");
@@ -183,12 +192,14 @@ void execCommand(Command c) {
             break;
     }
 
+    // if input was something else, restore stuff back to normal
     if(stdinSave > 0) {
         dup2(stdinSave, 0);
         close(inFd);
         close(stdinSave);
     }
 
+    // if output was something else, restore stuff back to normal
     if(stdoutSave > 0) {
         dup2(stdoutSave, 1);
         close(outFd);
@@ -238,7 +249,6 @@ void repl() {
         //  dump(parsed);
     }
 
-    printf("\n");
     free(inp);
 }
 
