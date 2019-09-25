@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <readline/readline.h>
 
 #include "shell.h"
 

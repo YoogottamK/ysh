@@ -32,11 +32,8 @@ void bgProcessExit(int sig) {
 }
 
 void ctrlcHandler(int sig) {
-    printf("\n");
-
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
+    printf("\n%s", makePrompt());
+    fflush(stdout);
 }
 
 void ctrlzHandler(int sig) {
@@ -52,10 +49,7 @@ void ctrlzHandler(int sig) {
 
         procList = insert(procList, p);
     } else {
-        printf("\n");
-
-        rl_on_new_line();
-        rl_replace_line("", 0);
-        rl_redisplay();
+        printf("\n%s", makePrompt());
+        fflush(stdout);
     }
 }

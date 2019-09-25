@@ -219,20 +219,17 @@ void execCommand(Command c) {
 }
 
 void repl() {
-    //  size_t bufSize = 0;
+    size_t bufSize = 0;
     char * inp = 0;
-    //  ssize_t inpSize;
+    ssize_t inpSize;
 
     // the L in REPL
     while(1) {
         char * prompt = makePrompt();
-        inp = readline(prompt);
-        free(prompt);
 
         if(upCount) {
             if(upCount > h.index) {
                 fprintf(stderr, "Recall capacity exceeded\n");
-                rl_on_new_line();
             } else {
                 inp[0] = 0;
                 strcpy(inp, h.history[(h.index - upCount) % 20]);
@@ -241,15 +238,13 @@ void repl() {
             upCount = 0;
         }
 
-        if(!inp)
-            break;
-
         // the R in REPL
-        //  inpSize = getline(&inp, &bufSize, stdin);
-        //  inp[inpSize - 1] = 0;
+        printf("%s", prompt);
+        inpSize = getline(&inp, &bufSize, stdin);
+        inp[inpSize - 1] = 0;
 
-        //  if(inpSize <= 0)
-            //  break;
+        if(inpSize <= 0)
+            break;
 
         // the E in REPL
         Parsed parsed = parse(inp);

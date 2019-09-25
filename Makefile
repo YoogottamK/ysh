@@ -1,4 +1,4 @@
-CFLAGS = -g -Wall -lreadline
+CFLAGS = -g -Wall
 CC = gcc
 INCLUDE = include
 
