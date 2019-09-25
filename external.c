@@ -35,7 +35,8 @@ void systemCommand(Command c) {
             exit(EXIT_FAILURE);
         }
 
-        exit(EXIT_SUCCESS);
+        // if exec reaches this point, it means execvp failed
+        exit(EXIT_FAILURE);
     } else {
         // Parent process
         if(c.bg) {

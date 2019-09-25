@@ -1,9 +1,10 @@
+#include <fcntl.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
-#include <stdbool.h>
-#include <fcntl.h>
+#include <termios.h>
+#include <unistd.h>
 
 #include "list.h"
 
@@ -33,6 +34,10 @@
 
 #define MAX_LEN 1024
 
+/*
+ * Command: the most basic unit,
+ *  cmd arg1 arg2 ... > outFile < inFile &
+ */
 typedef struct Command {
     char * command;
     int argc;
@@ -46,11 +51,18 @@ typedef struct Command {
     bool append;
 } Command;
 
+/*
+ * Piped: contains various commands piped into one another
+ *  cmd1 | cmd2 | cmd3
+ */
 typedef struct Piped {
     int n;
     Command * commands;
 } Piped;
 
+/*
+ * History: for storing history
+ */
 typedef struct History {
     char history[20][MAX_LEN];
     int index;
@@ -58,9 +70,13 @@ typedef struct History {
 
 char HOME[MAX_LEN];
 
+// history object
 History h;
+
+// root pointer to the linked list of open bg processes
 Node * procList;
 
+// stores the number of times the up key was pressed
 int upCount;
 
 #endif // __SHELL_H
