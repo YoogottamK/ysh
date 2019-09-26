@@ -82,7 +82,10 @@ int upCount;
 // stores the foreground process's pid
 pid_t fgPid;
 
-// stores the whole foreground command
+// stores the foreground command
 Command fgCommand;
+
+// shell's pid
+pid_t shellPid;
 
 #endif // __SHELL_H

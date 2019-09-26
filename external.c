@@ -4,6 +4,7 @@
 #include "external.h"
 #include "list.h"
 #include "utils.h"
+#include "signals.h"
 
 void systemCommand(Command c) {
     char ** args = (char**) malloc((c.argc + 2) * sizeof(char*));
@@ -25,9 +26,7 @@ void systemCommand(Command c) {
     }
 
     if(pidChild == 0) {
-        // child process
-        if(c.bg)
-            setpgid(0, 0);
+        setpgid(0, 0);
 
         if(execvp(c.command, args) < 0) {
             fprintf(stderr, "Error: command '%s' not found\n", c.command);
@@ -45,15 +44,36 @@ void systemCommand(Command c) {
             strcpy(p.name, getFullCommand(c));
 
             procList = insert(procList, p);
-        }
-        else {
+        } else {
             fgPid = pidChild;
             fgCommand = c;
 
-            waitpid(-1, &status, WUNTRACED);
+            signal(SIGTTIN, SIG_IGN);
+            signal(SIGTTOU, SIG_IGN);
+
+            tcsetpgrp(0, fgPid);
+
+            waitpid(fgPid, &status, WUNTRACED);
+
+            tcsetpgrp(0, getpgid(0));
+
+            signal(SIGTTIN, SIG_DFL);
+            signal(SIGTTOU, SIG_DFL);
+
+            if(WIFSTOPPED(status)) {
+                printf("\nSuspended\t%s [%d]\n", getFullCommand(fgCommand), fgPid);
+
+                Process p;
+                p.pid = fgPid;
+                p.name = (char *) malloc(strlen(fgCommand.command) + 1);
+                strcpy(p.name, getFullCommand(fgCommand));
+
+                procList = insert(procList, p);
+
+                fgPid = -1;
+            }
 
             fgPid = -1;
-            fgCommand.command = 0;
         }
     }
 

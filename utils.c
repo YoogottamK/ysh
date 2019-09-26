@@ -73,6 +73,8 @@ void init() {
     signal(SIGINT, ctrlcHandler);
     signal(SIGTSTP, ctrlzHandler);
     signal(SIGCHLD, bgProcessExit);
+
+    shellPid = getpid();
 }
 
 void teardown() {
