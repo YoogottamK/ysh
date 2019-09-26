@@ -47,4 +47,9 @@ char * getFullCommand(Command c);
  */
 int upHist(int c, int k);
 
+/*
+ * the executioner
+ */
+void execCommand(Command c);
+
 #endif // __UTILS_H
