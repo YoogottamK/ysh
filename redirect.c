@@ -37,14 +37,14 @@ void redirectBegin(Command c) {
 void redirectRestore() {
     // if input was something else, restore stuff back to normal
     if(stdinSave > 0) {
-        dup2(stdinSave, 0);
+        dup2(stdinSave, STDIN_FILENO);
         close(inFd);
         close(stdinSave);
     }
 
     // if output was something else, restore stuff back to normal
     if(stdoutSave > 0) {
-        dup2(stdoutSave, 1);
+        dup2(stdoutSave, STDOUT_FILENO);
         close(outFd);
         close(stdoutSave);
     }
