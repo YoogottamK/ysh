@@ -14,6 +14,9 @@ debug: ysh
 bg.o: bg.c $(INCLUDE)/bg.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c bg.c
 
+cronjob.o: cronjob.c $(INCLUDE)/cronjob.h $(INCLUDE)/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c cronjob.c
+
 cd.o: cd.c $(INCLUDE)/cd.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c cd.c
 

@@ -1,3 +1,10 @@
+/*
+ * This file contains functions that are used in multiple places
+ *
+ * Instead of redefining them everywhere, I defined them here
+ *  and include this file wherever they are needed
+ */
+
 #include <termios.h>
 #include <sys/ioctl.h>
 #include <signal.h>
@@ -6,6 +13,7 @@
 
 #include "bg.h"
 #include "cd.h"
+#include "cronjob.h"
 #include "echo.h"
 #include "env.h"
 #include "external.h"
@@ -18,9 +26,9 @@
 #include "overkill.h"
 #include "parse.h"
 #include "pcwd.h"
-#include "redirect.h"
 #include "pinfo.h"
 #include "prompt.h"
+#include "redirect.h"
 #include "signals.h"
 
 #ifndef DEBUG
@@ -95,7 +103,8 @@ void execCommand(Command c) {
         "quit",
         "overkill",
         "fg",
-        "bg"
+        "bg",
+        "cronjob"
     };
 
     int n = sizeof(builtin) / sizeof(builtin[0]),
@@ -175,6 +184,9 @@ void execCommand(Command c) {
             break;
         case 14:
             bgHandler(c);
+            break;
+        case 15:
+            cronjobHandler(c);
             break;
         default:
             systemCommand(c);
