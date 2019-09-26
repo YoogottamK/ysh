@@ -226,6 +226,37 @@ void repl() {
 
         // the E in REPL
         Parsed parsed = parse(inp);
+
+        if(DEBUG) {
+            printf(COL_BG_YLW COL_FG_BLK "============" COL_RST "\n");
+            for(int i = 0; i < parsed.n; i++) {
+                for(int j = 0; j < parsed.piped[i].n; j++) {
+                    Command c = parsed.piped[i].commands[j];
+
+                    printf(COL_BG_YLW COL_FG_BLK "===COMMAND===" COL_RST "\n");
+
+                    if(c.argc < 0) {
+                        printf("Something was wrong with this command\n");
+                        continue;
+                    }
+
+                    printf("%s\n", c.command);
+
+                    printf("args: ");
+                    for(int i = 0; i < c.argc; i++)
+                        printf("'%s' ", c.args[i]);
+                    printf("\n");
+
+                    printf("inp: %s\n", c.inp ? c.inp : "STDIN");
+                    printf("out: %s\n", c.out ? c.out : "STDOUT");
+                    printf("append: %d\n", c.append);
+
+                    printf(COL_BG_YLW COL_FG_BLK "======END======" COL_RST "\n");
+                }
+            }
+            printf(COL_BG_YLW COL_FG_BLK "============" COL_RST "\n");
+        }
+
         for(int i = 0; i < parsed.n; i++)
             for(int j = 0; j < parsed.piped[i].n; j++)
                 execCommand(parsed.piped[i].commands[j]);

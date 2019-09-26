@@ -105,6 +105,8 @@ Command * parseCommands(Split p) {
     for(int i = 0; i < p.n; i++) {
         initCommand(&ret[i]);
 
+        if(!strlen(p.tokens[i])) continue;
+
         escapeQuotes(p.tokens[i], ' ', 1);
 
         Split command = split(p.tokens[i], ' ');
