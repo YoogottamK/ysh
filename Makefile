@@ -2,7 +2,7 @@ CFLAGS = -g -Wall
 CC = gcc
 INCLUDE = include
 
-ALL_OBJECTS = bg.o cd.o cronjob.o fg.o echo.o env.o external.o history.o jobs.o kjob.o list.o ls.o nightswatch.o overkill.o parse.o pcwd.o pinfo.o prompt.o redirect.o signals.o shell.o utils.o
+ALL_OBJECTS = bg.o cd.o cronjob.o fg.o echo.o env.o external.o history.o jobs.o kjob.o list.o ls.o nightswatch.o overkill.o parse.o pcwd.o pinfo.o piping.o prompt.o redirect.o signals.o shell.o utils.o
 
 ysh: $(ALL_OBJECTS)
 	$(CC) $(CFLAGS) -I$(INCLUDE) -o ysh $(ALL_OBJECTS)
@@ -61,6 +61,9 @@ pcwd.o: pcwd.c $(INCLUDE)/pcwd.h $(INCLUDE)/shell.h
 
 pinfo.o: pinfo.c $(INCLUDE)/pinfo.h $(INCLUDE)/utils.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c pinfo.c
+
+piping.o: piping.c $(INCLUDE)/piping.h $(INCLUDE)/utils.h $(INCLUDE)/shell.h
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c piping.c
 
 prompt.o: prompt.c $(INCLUDE)/prompt.h $(INCLUDE)/utils.h $(INCLUDE)/shell.h
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c prompt.c

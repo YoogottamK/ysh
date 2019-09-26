@@ -27,6 +27,7 @@
 #include "parse.h"
 #include "pcwd.h"
 #include "pinfo.h"
+#include "piping.h"
 #include "prompt.h"
 #include "redirect.h"
 #include "signals.h"
@@ -118,20 +119,20 @@ void execCommand(Command c) {
     }
 
     if(DEBUG) {
-        printf(COL_BG_CYN COL_FG_BLK "===DEBUG===" COL_RST "\n");
+        fprintf(stderr, COL_BG_CYN COL_FG_BLK "===DEBUG===" COL_RST "\n");
 
-        printf("%s\n", c.command);
+        fprintf(stderr, "%s\n", c.command);
 
-        printf("args: ");
+        fprintf(stderr, "args: ");
         for(int i = 0; i < c.argc; i++)
-            printf("'%s' ", c.args[i]);
-        printf("\n");
+            fprintf(stderr, "'%s' ", c.args[i]);
+        fprintf(stderr, "\n");
 
-        printf("inp: %s\n", c.inp ? c.inp : "STDIN");
-        printf("out: %s\n", c.out ? c.out : "STDOUT");
-        printf("append: %d\n", c.append);
+        fprintf(stderr, "inp: %s\n", c.inp ? c.inp : "STDIN");
+        fprintf(stderr, "out: %s\n", c.out ? c.out : "STDOUT");
+        fprintf(stderr, "append: %d\n", c.append);
 
-        printf(COL_BG_CYN COL_FG_BLK "====END====" COL_RST "\n");
+        fprintf(stderr, COL_BG_CYN COL_FG_BLK "====END====" COL_RST "\n");
     }
 
     redirectBegin(c);
@@ -228,38 +229,37 @@ void repl() {
         Parsed parsed = parse(inp);
 
         if(DEBUG) {
-            printf(COL_BG_YLW COL_FG_BLK "============" COL_RST "\n");
+            fprintf(stderr, COL_BG_YLW COL_FG_BLK "============" COL_RST "\n");
             for(int i = 0; i < parsed.n; i++) {
                 for(int j = 0; j < parsed.piped[i].n; j++) {
                     Command c = parsed.piped[i].commands[j];
 
-                    printf(COL_BG_YLW COL_FG_BLK "===COMMAND===" COL_RST "\n");
+                    fprintf(stderr, COL_BG_YLW COL_FG_BLK "===COMMAND===" COL_RST "\n");
 
                     if(c.argc < 0) {
-                        printf("Something was wrong with this command\n");
+                        fprintf(stderr, "Something was wrong with this command\n");
                         continue;
                     }
 
-                    printf("%s\n", c.command);
+                    fprintf(stderr, "%s\n", c.command);
 
-                    printf("args: ");
+                    fprintf(stderr, "args: ");
                     for(int i = 0; i < c.argc; i++)
-                        printf("'%s' ", c.args[i]);
-                    printf("\n");
+                        fprintf(stderr, "'%s' ", c.args[i]);
+                    fprintf(stderr, "\n");
 
-                    printf("inp: %s\n", c.inp ? c.inp : "STDIN");
-                    printf("out: %s\n", c.out ? c.out : "STDOUT");
-                    printf("append: %d\n", c.append);
+                    fprintf(stderr, "inp: %s\n", c.inp ? c.inp : "STDIN");
+                    fprintf(stderr, "out: %s\n", c.out ? c.out : "STDOUT");
+                    fprintf(stderr, "append: %d\n", c.append);
 
-                    printf(COL_BG_YLW COL_FG_BLK "======END======" COL_RST "\n");
+                    fprintf(stderr, COL_BG_YLW COL_FG_BLK "======END======" COL_RST "\n");
                 }
             }
-            printf(COL_BG_YLW COL_FG_BLK "============" COL_RST "\n");
+            fprintf(stderr, COL_BG_YLW COL_FG_BLK "============" COL_RST "\n");
         }
 
         for(int i = 0; i < parsed.n; i++)
-            for(int j = 0; j < parsed.piped[i].n; j++)
-                execCommand(parsed.piped[i].commands[j]);
+            execPiped(parsed.piped[i]);
 
         //  dump(parsed);
     }
