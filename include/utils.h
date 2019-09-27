@@ -43,11 +43,6 @@ char * getLineStartsWith(FILE * f, char * beg);
 char * getFullCommand(Command c);
 
 /*
- * handler for up arrow key
- */
-int upHist(int c, int k);
-
-/*
  * the executioner
  */
 void execCommand(Command c);
