@@ -5,13 +5,18 @@
 #define __HISTORY_H
 
 /*
- * manages updating history
+ * Manages updating history
  */
-void updateHistory(Command c);
+void updateHistory(Piped * piped);
 
 /*
- * handles the history command
+ * Handles the history command
  */
 void historyHandler(Command c);
+
+/*
+ * Counts number of up arrows in the string
+ */
+int getUpArrowCount(char * str);
 
 #endif // __HISTORY_H

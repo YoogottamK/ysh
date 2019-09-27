@@ -1,4 +1,5 @@
 #include "parse.h"
+#include "history.h"
 
 typedef struct Split {
     int n;
@@ -213,6 +214,8 @@ Parsed parse(char * str) {
 
     // allocate space for commands
     parsed.piped = parsePiped(input);
+
+    updateHistory(parsed.piped);
 
     return parsed;
 }

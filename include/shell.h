@@ -76,9 +76,6 @@ History h;
 // root pointer to the linked list of open bg processes
 Node * procList;
 
-// stores the number of times the up key was pressed
-int upCount;
-
 // stores the foreground process's pid
 pid_t fgPid;
 

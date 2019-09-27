@@ -2,8 +2,16 @@
 
 void history(int n);
 
-void updateHistory(Command c) {
-    char * command = getFullCommand(c);
+void updateHistory(Piped * piped) {
+    char * command = malloc(MAX_LEN);
+    command[0] = 0;
+
+    for(int i = 0; i < piped->n; i++) {
+        strcat(command, getFullCommand(piped->commands[i]));
+
+        if(i != piped->n - 1)
+            strcat(command, " | ");
+    }
 
     if(!strcmp(command, h.history[h.index % 20]))
         return;
@@ -15,8 +23,6 @@ void updateHistory(Command c) {
 
     h.history[h.index % 20][0] = 0;
     strcpy(h.history[h.index % 20], command);
-
-    free(command);
 }
 
 void historyHandler(Command c) {
@@ -46,4 +52,21 @@ void history(int n) {
 
     for(int i = start; i < end; i++)
         printf("%s\n", h.history[i % 20]);
+}
+
+int getUpArrowCount(char * str) {
+    if(!str)
+        return 0;
+
+    int l = strlen(str),
+        c = 0;
+
+    for(int i = 0; i < l; i += 3) {
+        if(i < l - 2 && str[i] == 27 && str[i + 1] == 91 && str[i + 2] == 65)
+            c++;
+        else
+            continue;
+    }
+
+    return c - 1;
 }

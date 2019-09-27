@@ -42,9 +42,6 @@ void init() {
     // clears the screen
     printf("\e[1;1H\e[2J");
 
-    // initialize up arrow counter
-    upCount = 0;
-
     // initialize home with current path
     ssize_t len = readlink("/proc/self/exe", HOME, MAX_LEN);
     int i;
@@ -139,8 +136,6 @@ void execCommand(Command c) {
 
     redirectBegin(c);
 
-    updateHistory(c);
-
     // have to exec builtin
     switch(command) {
         case 0:
@@ -208,17 +203,6 @@ void repl() {
     while(1) {
         char * prompt = makePrompt();
 
-        if(upCount) {
-            if(upCount > h.index) {
-                fprintf(stderr, "Recall capacity exceeded\n");
-            } else {
-                inp[0] = 0;
-                strcpy(inp, h.history[(h.index - upCount) % 20]);
-            }
-
-            upCount = 0;
-        }
-
         // the R in REPL
         printf("%s", prompt);
         inpSize = getline(&inp, &bufSize, stdin);
@@ -226,6 +210,20 @@ void repl() {
 
         if(inpSize <= 0)
             break;
+
+        int upCount = getUpArrowCount(inp);
+
+        if(upCount >= 0) {
+            if(upCount > h.index) {
+                fprintf(stderr, "Recall capacity exceeded\n");
+            } else {
+                inp[0] = 0;
+                strcpy(inp, h.history[(h.index - upCount) % 20]);
+
+                printf("%s %s\n", makePrompt(), inp);
+                fflush(stdout);
+            }
+        }
 
         // the E in REPL
         Parsed parsed = parse(inp);
@@ -378,13 +376,4 @@ char * getFullCommand(Command c) {
     }
 
     return str;
-}
-
-int upHist(int c, int k) {
-    upCount++;
-
-    if(upCount <= h.index)
-        printf("\r\33[2K%s%s", makePrompt(), h.history[(h.index - upCount) % 20]);
-
-    return 0;
 }
