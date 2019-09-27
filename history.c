@@ -19,6 +19,9 @@ void updateHistory(Piped * piped) {
             strcat(command, piped->commands[i].out);
         }
 
+        if(piped->commands[i].bg)
+            strcat(command, " &");
+
         if(i != piped->n - 1)
             strcat(command, " | ");
     }
