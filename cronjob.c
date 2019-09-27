@@ -1,3 +1,6 @@
+#include <time.h>
+#include <sys/wait.h>
+
 #include "cronjob.h"
 #include "utils.h"
 #include "prompt.h"
@@ -16,10 +19,10 @@ void cronjobHandler(Command c) {
             if(!(i & 1)) {
                 if(!strcmp(c.args[i], "-p")) {
                     i++;
-                    f = atoi(c.args[i]);
+                    t = atoi(c.args[i]);
                 } else if(!strcmp(c.args[i], "-t")) {
                     i++;
-                    t = atoi(c.args[i]);
+                    f = atoi(c.args[i]);
                 } else if(!strcmp(c.args[i], "-c")) {
                     i++;
                     cmd = c.args[i];
@@ -34,27 +37,35 @@ void cronjobHandler(Command c) {
             command.append = 0;
             command.argc = 0;
             command.args = 0;
-            command.bg = 1;
+            command.bg = 0;
             command.command = cmd;
             command.inp = command.out = 0;
 
-            cronjob(command, f, t);
+            pid_t pid = fork();
+            if(pid == 0) {
+                cronjob(command, f, t);
+
+                exit(EXIT_SUCCESS);
+            }
         }
     }
 }
 
 void cronjob(Command c, int f, int t) {
+    if(!t || !f)
+        return;
+
     int n = t / f;
+    time_t init;
 
     if(n <= 0)
         return;
 
     for(int i = 0; i < n; i++) {
+        init = time(0);
         execCommand(c);
-        //  printf("%s", makePrompt());
-        //  fflush(stdout);
 
-        if(i != n - 1)
-            sleep(f);
+        while(time(0) < init + f)
+            continue;
     }
 }
