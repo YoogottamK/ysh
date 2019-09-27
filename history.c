@@ -9,6 +9,16 @@ void updateHistory(Piped * piped) {
     for(int i = 0; i < piped->n; i++) {
         strcat(command, getFullCommand(piped->commands[i]));
 
+        if(piped->commands[i].inp) {
+            strcat(command, " < ");
+            strcat(command, piped->commands[i].inp);
+        }
+
+        if(piped->commands[i].out) {
+            strcat(command, piped->commands[i].append ? " >> " : " > ");
+            strcat(command, piped->commands[i].out);
+        }
+
         if(i != piped->n - 1)
             strcat(command, " | ");
     }
