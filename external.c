@@ -4,7 +4,6 @@
 #include "external.h"
 #include "list.h"
 #include "utils.h"
-#include "signals.h"
 
 void systemCommand(Command c) {
     char ** args = (char**) malloc((c.argc + 2) * sizeof(char*));

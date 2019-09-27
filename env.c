@@ -23,12 +23,14 @@ void setEnv(const char * name, const char * val) {
     if(!name || !val)
         return;
 
-    setenv(name, val, 1);
+    if(setenv(name, val, 1))
+        perror("setenv");
 }
 
 void unsetEnv(const char * name) {
     if(!name)
         return;
 
-    unsetenv(name);
+    if(unsetenv(name))
+        perror("unsetenv");
 }

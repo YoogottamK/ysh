@@ -30,8 +30,8 @@ void fg(int job) {
 
     tcsetpgrp(0, toFg);
 
-    kill(toFg, SIGCONT);
-    // TODO: error detection
+    if(kill(toFg, SIGCONT))
+        perror("fg");
 
     fgPid = toFg;
 

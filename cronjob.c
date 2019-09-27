@@ -3,8 +3,6 @@
 
 #include "cronjob.h"
 #include "utils.h"
-#include "prompt.h"
-#include "parse.h"
 
 void cronjob(Command c, int f, int t);
 

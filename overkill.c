@@ -17,7 +17,8 @@ void overkill() {
     while(p.pid > 0) {
         procList = delete(procList, p);
 
-        kill(p.pid, SIGKILL);
+        if(kill(p.pid, SIGKILL))
+            perror("overkill");
 
         p = get(procList, 0);
     }

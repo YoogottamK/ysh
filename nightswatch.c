@@ -66,6 +66,11 @@ void nightswatch(char * command, int freq) {
 
         f = fopen(fileName, "r");
 
+        if(!f) {
+            perror("nightswatch");
+            return;
+        }
+
         // I had no time so ¯\_(ツ)_/¯
         line = getLineStartsWith(f, "            CPU0");
         printf("%s", line);

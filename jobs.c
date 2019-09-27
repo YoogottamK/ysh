@@ -21,6 +21,12 @@ void jobs() {
         sprintf(buf, "/proc/%d/stat", curr->proc.pid);
         fd = open(buf, O_RDONLY);
 
+        if(fd < 0) {
+            fprintf(stderr, "Couldn't find relevant files for pid %d\n", curr->proc.pid);
+            perror("jobs");
+            continue;
+        }
+
         read(fd, buf, MAX_LEN);
 
         char * status,

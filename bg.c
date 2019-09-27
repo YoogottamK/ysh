@@ -15,6 +15,6 @@ void bg(int job) {
     Process p = get(procList, job - 1);
     pid_t toBg = p.pid;
 
-    kill(toBg, SIGCONT);
-    // TODO: error detection
+    if(kill(toBg, SIGCONT))
+        perror("bg");
 }

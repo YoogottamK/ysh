@@ -27,7 +27,8 @@ void execPiped(Piped p) {
     for(int i = 0; i < p.n; i++) {
         // create the pipe for this command
         if(i < p.n - 1)
-            pipe(pipes[i]);
+            if(pipe(pipes[i]))
+                perror("pipe");
 
         if(!i) {
             // first command, read from stdin
