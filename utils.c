@@ -38,6 +38,44 @@
 #define DEBUG 1
 #endif
 
+const char * builtin[] = {
+    "cd",
+    "pwd",
+    "echo",
+    "ls",
+    "pinfo",
+    "history",
+    "nightswatch",
+    "setenv",
+    "unsetenv",
+    "jobs",
+    "kjob",
+    "overkill",
+    "fg",
+    "bg",
+    "cronjob",
+    "quit"
+};
+
+// array of functions
+void (*builtIn[]) (Command c) = {
+    cdHandler,
+    pwdHandler,
+    echoHandler,
+    lsHandler,
+    pinfoHandler,
+    historyHandler,
+    nightswatchHandler,
+    setEnvHandler,
+    unsetEnvHandler,
+    jobsHandler,
+    kjobHandler,
+    overkillHandler,
+    fgHandler,
+    bgHandler,
+    cronjobHandler,
+};
+
 void init() {
     // clears the screen
     printf("\e[1;1H\e[2J");
@@ -88,25 +126,6 @@ void execCommand(Command c) {
     if(!c.command || c.argc < 0)
         return;
 
-    const char * builtin[] = {
-        "cd",
-        "pwd",
-        "echo",
-        "ls",
-        "pinfo",
-        "history",
-        "nightswatch",
-        "setenv",
-        "unsetenv",
-        "jobs",
-        "kjob",
-        "quit",
-        "overkill",
-        "fg",
-        "bg",
-        "cronjob"
-    };
-
     int n = sizeof(builtin) / sizeof(builtin[0]),
         command = -1;
 
@@ -136,59 +155,16 @@ void execCommand(Command c) {
 
     redirectBegin(c);
 
-    // have to exec builtin
-    switch(command) {
-        case 0:
-            cdHandler(c);
-            break;
-        case 1:
-            pwdHandler(c);
-            break;
-        case 2:
-            echoHandler(c);
-            break;
-        case 3:
-            lsHandler(c);
-            break;
-        case 4:
-            pinfoHandler(c);
-            break;
-        case 5:
-            historyHandler(c);
-            break;
-        case 6:
-            nightswatchHandler(c);
-            break;
-        case 7:
-            setEnvHandler(c);
-            break;
-        case 8:
-            unsetEnvHandler(c);
-            break;
-        case 9:
-            jobsHandler(c);
-            break;
-        case 10:
-            kjobHandler(c);
-            break;
-        case 11:
-            teardown();
-            exit(0);
-        case 12:
-            overkillHandler(c);
-            break;
-        case 13:
-            fgHandler(c);
-            break;
-        case 14:
-            bgHandler(c);
-            break;
-        case 15:
-            cronjobHandler(c);
-            break;
-        default:
-            systemCommand(c);
-            break;
+    if(command >= 0 && command <= 14) {
+        // call func array
+        builtIn[command](c);
+    } else if(command == 15) {
+        // quit
+        teardown();
+        exit(0);
+    } else {
+        // generic system command
+        systemCommand(c);
     }
 
     redirectRestore();
