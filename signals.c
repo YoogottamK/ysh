@@ -31,6 +31,12 @@ void bgProcessExit(int sig) {
     }
 }
 
-void ctrlcHandler(int sig) { }
+void ctrlcHandler(int sig) {
+    printf("\n%s", makePrompt());
+    fflush(stdout);
+}
 
-void ctrlzHandler(int sig) { }
+void ctrlzHandler(int sig) {
+    printf("\n%s", makePrompt());
+    fflush(stdout);
+}
