@@ -52,6 +52,19 @@ char * stripSpaces(char * str) {
     return str;
 }
 
+void stripQuotes(char * str) {
+    if(!str) return;
+
+    int e = strlen(str) - 1;
+
+    if(str[0] == str[e] && (str[0] == '\'' || str[0] == '\"')) {
+        str[e] = 0;
+
+        for(int i = 0; i < e; i++)
+            str[i] = str[i + 1];
+    }
+}
+
 void replaceTabsWithSpace(char * str) {
     if(!str) return;
 
@@ -121,6 +134,7 @@ Command * parseCommands(Split p) {
         // space seperated args
         for(int j = 1; j < command.n; j++) {
             escapeQuotes(command.tokens[j], 1, ' ');
+            stripQuotes(command.tokens[j]);
 
             if(!strcmp(command.tokens[j], "&")) continue;
 
