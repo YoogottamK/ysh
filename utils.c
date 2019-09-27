@@ -220,7 +220,7 @@ void repl() {
                 inp[0] = 0;
                 strcpy(inp, h.history[(h.index - upCount) % 20]);
 
-                printf("%s %s\n", makePrompt(), inp);
+                printf("%s%s\n", makePrompt(), inp);
                 fflush(stdout);
             }
         }
