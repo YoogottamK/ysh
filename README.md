@@ -34,12 +34,19 @@ This is a very basic implementation of shell in C.
     - [x] `cronjob`
  - [x] Handling `SIGINT` [C-c] and `SIGTSTP` [C-z] signals
  - [x] Command recall using up arrow key
+### Extras
+ - [x] `echo` supports printing environment variables
+ - [x] Spaces are escaped within quotes. i.e., `vim "bad name.txt"` will work as expected
 
 ## Build instructions
 Simply run
 ```
 $ make
 $ ./ysh
+```
+If you want to see debug info, run
+```
+$ make debug
 ```
 You'll see a lot of files. To remove them, you can run
 ```
